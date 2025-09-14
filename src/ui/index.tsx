@@ -12,13 +12,9 @@ import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
 import * as Sentry from '@sentry/react'
 import globalConfig from '../global.config'
-import { framer } from 'framer-plugin'
+import loadUI from '../bridges/loadUI'
 
-framer.showUI({
-  position: 'top right',
-  width: 640,
-  height: 640,
-})
+loadUI()
 
 const container = document.getElementById('app')
 if (!container) {
