@@ -26,6 +26,7 @@ const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
 
+// Mixpanel
 if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   mixpanel.init(mixpanelToken, {
     api_host: 'https://api-eu.mixpanel.com',
@@ -46,6 +47,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   setEditor(globalConfig.env.editor)
 }
 
+// Sentry
 if (
   globalConfig.env.isSentryEnabled &&
   !globalConfig.env.isDev &&
@@ -97,11 +99,12 @@ if (
   ;(window as any).Sentry = devLogger
 }
 
+// Supabase
 if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
+// Bridge Canvas <> UI
 window.addEventListener('message', (event) => {
-  console.log('Message from plugin code', event)
   const data = event.data
   const pluginEvent = new CustomEvent('pluginMessage', {
     detail: data,
@@ -109,19 +112,7 @@ window.addEventListener('message', (event) => {
   window.dispatchEvent(pluginEvent)
 })
 
-// const originalPostMessage = parent.postMessage
-
-// parent.postMessage = (message, targetOrigin) => {
-//   originalPostMessage.call(parent, message, targetOrigin)
-
-//   if (message && message.pluginMessage !== undefined) {
-//     const eventName = message.pluginMessage.type || 'framerMessage'
-//     const eventData = message.pluginMessage || {}
-
-//     window.postMessage(eventName, eventData)
-//   }
-// }
-
+// Render
 root.render(
   <ConfigProvider
     limits={{

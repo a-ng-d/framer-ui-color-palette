@@ -16,7 +16,7 @@ const globalConfig: Config = {
     colorMode: 'figma-dark',
     isDev,
     isSupabaseEnabled: true,
-    isMixpanelEnabled: true,
+    isMixpanelEnabled: false,
     isSentryEnabled: true,
     announcementsDbId: import.meta.env.VITE_NOTION_ANNOUNCEMENTS_ID as string,
     onboardingDbId: import.meta.env.VITE_NOTION_ONBOARDING_ID as string,
