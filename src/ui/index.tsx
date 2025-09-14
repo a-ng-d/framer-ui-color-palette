@@ -101,12 +101,26 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
 window.addEventListener('message', (event) => {
-  const data = event.data.pluginMessage
+  console.log('Message from plugin code', event)
+  const data = event.data
   const pluginEvent = new CustomEvent('pluginMessage', {
     detail: data,
   })
   window.dispatchEvent(pluginEvent)
 })
+
+// const originalPostMessage = parent.postMessage
+
+// parent.postMessage = (message, targetOrigin) => {
+//   originalPostMessage.call(parent, message, targetOrigin)
+
+//   if (message && message.pluginMessage !== undefined) {
+//     const eventName = message.pluginMessage.type || 'framerMessage'
+//     const eventData = message.pluginMessage || {}
+
+//     window.postMessage(eventName, eventData)
+//   }
+// }
 
 root.render(
   <ConfigProvider

@@ -18,8 +18,13 @@
 // import checkTrialStatus from './checks/checkTrialStatus'
 // import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 import { framer } from 'framer-plugin'
+import globalConfig from '../global.config'
+import checkUserConsent from './checks/checkUserConsent'
+import checkTrialStatus from './checks/checkTrialStatus'
+import checkUserPreferences from './checks/checkUserPreferences'
+import checkUserLicense from './checks/checkUserLicense'
 
-const loadUI = () => {
+const loadUI = async () => {
   interface Window {
     width: number
     height: number
@@ -41,6 +46,37 @@ const loadUI = () => {
     minWidth: 640,
     minHeight: 420,
   })
+
+  setTimeout(async () => {
+    const user = await framer.getCurrentUser()
+
+    // Canvas > UI
+    window.postMessage({
+      type: 'CHECK_USER_AUTHENTICATION',
+      data: {
+        id: user.id,
+        fullName: user.name,
+        avatar: user.avatarUrl,
+        accessToken: window.localStorage.getItem('supabase_access_token'),
+        refreshToken: window.localStorage.getItem('supabase_refresh_token'),
+      },
+    })
+    window.postMessage({
+      type: 'CHECK_ANNOUNCEMENTS_VERSION',
+    })
+    window.postMessage({
+      type: 'CHECK_EDITOR',
+      data: {
+        editor: globalConfig.env.editor,
+      },
+    })
+
+    // Checks
+    checkUserConsent()
+      .then(() => checkTrialStatus())
+      .then(() => checkUserPreferences())
+      .then(() => checkUserLicense())
+  }, 1000)
 
   // if (iframe) {
   //   iframe.width = windowSize.width.toString()
