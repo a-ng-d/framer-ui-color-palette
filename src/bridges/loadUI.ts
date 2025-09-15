@@ -75,9 +75,8 @@ const loadUI = async () => {
 
   // UI > Canvas
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  window.addEventListener('message', async (msg: any) => {
-    const path = msg.data.pluginMessage
-    console.log('Message received', path)
+  window.addEventListener('pluginMessage', async (msg: any) => {
+    const path = msg.detail.message.pluginMessage
 
     const actions: { [action: string]: () => void } = {
       CHECK_USER_CONSENT: () => checkUserConsent(),

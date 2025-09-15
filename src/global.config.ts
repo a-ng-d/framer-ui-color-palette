@@ -84,6 +84,7 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
       'HELP_CHAT',
+      'LOCAL_PALETTES_PAGE',
     ],
     [
       'LOCAL_PALETTES',
