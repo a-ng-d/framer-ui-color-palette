@@ -22,21 +22,20 @@ const createLocalStyles = async (id: string) => {
 
   const createdLocalStylesStatusMessage = await framer
     .getColorStyles()
-    .then((localStyles) => {
+    .then(async (localStyles) => {
       let i = 0
+      const isAllowedToCreate = framer.isAllowedTo('createColorStyle')
 
-      palette.libraryData
-        .filter((item) => {
-          return hasThemes
-            ? !item.id.includes('00000000000')
-            : item.id.includes('00000000000')
-        })
-        .forEach(async (item) => {
+      const filteredItems = palette.libraryData.filter((item) => {
+        return hasThemes
+          ? !item.id.includes('00000000000')
+          : item.id.includes('00000000000')
+      })
+
+      await Promise.all(
+        filteredItems.map(async (item) => {
           const path = [
             item.paletteName,
-            item.themeName === ''
-              ? locales.get().themes.defaultName
-              : item.themeName,
             item.colorName === ''
               ? locales.get().colors.defaultName
               : item.colorName,
@@ -45,12 +44,22 @@ const createLocalStyles = async (id: string) => {
             .filter((item) => item !== '' && item !== 'None')
             .join('/')
 
-          const lightRgba = `rgba(${(item.gl?.[0] ?? 0) * 255}, ${(item.gl?.[1] ?? 0) * 255}, ${(item.gl?.[2] ?? 0) * 255}, ${item.alpha || 1})`
+          let lightRgba
+          if (item.gl !== undefined && item.alpha !== 1)
+            lightRgba = `rgba(${Math.floor(item.gl[0] * 255)}, ${Math.floor(
+              item.gl[1] * 255
+            )}, ${Math.floor(item.gl[2] * 255)}, ${item.alpha})`
+          else if (item.gl !== undefined && item.alpha === 1)
+            lightRgba = `rgb(${Math.floor(item.gl[0] * 255)}, ${Math.floor(
+              item.gl[1] * 255
+            )}, ${Math.floor(item.gl[2] * 255)})`
+          else lightRgba = 'rgba(0, 0, 0, 1)'
 
           if (
             localStyles.find((localStyle) => localStyle.id === item.styleId) ===
               undefined &&
-            item.hex !== undefined
+            item.gl !== undefined &&
+            isAllowedToCreate
           ) {
             const style = new LocalStyle({
               name: path,
@@ -64,6 +73,7 @@ const createLocalStyles = async (id: string) => {
 
           return item
         })
+      )
 
       palette.libraryData = new Data(palette).makeLibraryData(
         ['style_id'],

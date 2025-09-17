@@ -23,14 +23,16 @@ const updateLocalStyles = async (id: string) => {
 
   const updatedLocalStylesStatusMessage = await framer
     .getColorStyles()
-    .then((localStyles) => {
+    .then(async (localStyles) => {
       let i = 0,
-        j = 0,
         k = 0
       const messages: Array<string> = []
 
-      if (canDeepSyncStyles ?? false)
-        localStyles.forEach((localStyle) => {
+      const isAllowedToRemove = framer.isAllowedTo('ColorStyle.remove')
+      const isAllowedToSet = framer.isAllowedTo('ColorStyle.setAttributes')
+
+      if ((canDeepSyncStyles ?? false) && isAllowedToRemove) {
+        const stylesToRemove = localStyles.filter((localStyle) => {
           const hasStyleMatch = palette.libraryData
             .filter((item) => {
               return hasThemes
@@ -39,27 +41,30 @@ const updateLocalStyles = async (id: string) => {
             })
             .some((libraryItem) => libraryItem.styleId === localStyle.id)
 
-          if (!hasStyleMatch) {
-            localStyle.remove()
-            k++
-          }
+          return !hasStyleMatch
         })
 
-      palette.libraryData
-        .filter((item) => {
-          return hasThemes
-            ? !item.id.includes('00000000000')
-            : item.id.includes('00000000000')
-        })
-        .forEach((item) => {
+        await Promise.all(
+          stylesToRemove.map(async (localStyle) => {
+            await localStyle.remove()
+            k++
+          })
+        )
+      }
+
+      const filteredItems = palette.libraryData.filter((item) => {
+        return hasThemes
+          ? !item.id.includes('00000000000')
+          : item.id.includes('00000000000')
+      })
+
+      await Promise.all(
+        filteredItems.map(async (item) => {
           const styleMatch = localStyles.find(
             (localStyle) => localStyle.id === item.styleId
           )
           const path = [
             item.paletteName,
-            item.themeName === ''
-              ? locales.get().themes.defaultName
-              : item.themeName,
             item.colorName === ''
               ? locales.get().colors.defaultName
               : item.colorName,
@@ -67,28 +72,56 @@ const updateLocalStyles = async (id: string) => {
           ]
             .filter((item) => item !== '' && item !== 'None')
             .join('/')
-          const lightRgba = `rgba(${(item.gl?.[0] ?? 0) * 255}, ${(item.gl?.[1] ?? 0) * 255}, ${(item.gl?.[2] ?? 0) * 255}, ${item.alpha || 1})`
 
-          if (styleMatch !== undefined) {
-            if (styleMatch.name !== path) {
-              styleMatch.setAttributes({ name: path })
+          let lightRgba
+          if (item.gl !== undefined && item.alpha !== 1)
+            lightRgba = `rgba(${Math.floor(item.gl[0] * 255)}, ${Math.floor(
+              item.gl[1] * 255
+            )}, ${Math.floor(item.gl[2] * 255)}, ${item.alpha})`
+          else if (item.gl !== undefined && item.alpha === 1)
+            lightRgba = `rgb(${Math.floor(item.gl[0] * 255)}, ${Math.floor(
+              item.gl[1] * 255
+            )}, ${Math.floor(item.gl[2] * 255)})`
+          else lightRgba = 'rgba(0, 0, 0, 1)'
+
+          if (styleMatch !== undefined && isAllowedToSet) {
+            let j = 0
+
+            console.log(
+              styleMatch.name,
+              item.shadeName,
+              styleMatch.path,
+              path,
+              styleMatch.light,
+              lightRgba
+            )
+
+            if (styleMatch.name !== item.shadeName) {
+              await styleMatch.setAttributes({ name: item.shadeName })
+              j++
+            }
+
+            if (styleMatch.path !== `/${path}`) {
+              await styleMatch.setAttributes({ path: `/${path}` })
               j++
             }
 
             if (styleMatch.light !== lightRgba) {
-              styleMatch.setAttributes({ light: lightRgba })
+              await styleMatch.setAttributes({ light: lightRgba })
               j++
             }
 
             if (styleMatch.dark !== lightRgba) {
-              styleMatch.setAttributes({ dark: lightRgba })
+              await styleMatch.setAttributes({ dark: lightRgba })
               j++
             }
 
-            i = j > 0 ? i + 1 : i
-            j = 0
+            if (j > 0) {
+              i++
+            }
           }
         })
+      )
 
       if (i > 1)
         messages.push(

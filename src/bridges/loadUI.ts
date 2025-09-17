@@ -113,6 +113,7 @@ const loadUI = async () => {
       CREATE_PALETTE_FROM_REMOTE: () =>
         createFromRemote(path)
           .catch((error) => {
+            console.error(error)
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -139,6 +140,7 @@ const loadUI = async () => {
           )
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
+            console.error(error)
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -190,7 +192,8 @@ const loadUI = async () => {
       OPEN_IN_BROWSER: () => window.open(path.data.url, '_blank'),
       GET_PALETTES: async () => getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () =>
-        jumpToPalette(path.id).catch((error) =>
+        jumpToPalette(path.id).catch((error) => {
+          console.error(error)
           window.postMessage({
             type: 'POST_MESSAGE',
             data: {
@@ -198,7 +201,7 @@ const loadUI = async () => {
               message: error.message,
             },
           })
-        ),
+        }),
       DUPLICATE_PALETTE: async () =>
         createPaletteFromDuplication(path.id)
           .finally(async () => {
