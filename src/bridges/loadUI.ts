@@ -18,6 +18,8 @@ import jumpToPalette from './jumpToPalette'
 import createPaletteFromDuplication from './creations/createFromDuplication'
 import deletePalette from './creations/deletePalette'
 import enableTrial from './enableTrial'
+import createLocalStyles from './creations/createLocalStyles'
+import updateLocalStyles from './updates/updateLocalStyles'
 
 const loadUI = async () => {
   interface Window {
@@ -122,28 +124,29 @@ const loadUI = async () => {
           .finally(() => {
             window.postMessage({ type: 'STOP_LOADER' })
           }),
-      SYNC_LOCAL_STYLES: () => {
-        window.postMessage({ type: 'STOP_LOADER' })
-        window.postMessage({
-          type: 'POST_MESSAGE',
-          data: {
-            type: 'INFO',
-            message: 'The local styles have been synced',
-          },
-        })
-        console.log('Sync local styles', path)
-      },
-      SYNC_LOCAL_VARIABLES: () => {
-        window.postMessage({ type: 'STOP_LOADER' })
-        window.postMessage({
-          type: 'POST_MESSAGE',
-          data: {
-            type: 'INFO',
-            message: 'The local variables have been synced',
-          },
-        })
-        console.log('Sync local styles', path)
-      },
+      SYNC_LOCAL_STYLES: async () =>
+        createLocalStyles(path.id)
+          .then(async (message) => [message, await updateLocalStyles(path.id)])
+          .then((messages) =>
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'INFO',
+                message: messages.join(locales.get().separator),
+                timer: 10000,
+              },
+            })
+          )
+          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          }),
       CREATE_DOCUMENT: () => {
         window.postMessage({ type: 'STOP_LOADER' })
         console.log('Create document', path)
