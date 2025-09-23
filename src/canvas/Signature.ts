@@ -116,14 +116,14 @@ export default class Signature {
     })
 
     // Instances
-    const nodeInstance = await this.node
+    const nodeSignatureInstance = await this.node
     const nodeInfoInstance = await this.makeNodeInfo()
     // const nodeLogotypeInstance = await this.makeNodeLogotype()
 
     // Insert
-    if (!nodeInstance || !nodeInfoInstance) return null
+    if (!nodeSignatureInstance || !nodeInfoInstance) return null
 
-    framer.setParent(nodeInfoInstance.id, nodeInstance.id)
+    framer.setParent(nodeInfoInstance.id, nodeSignatureInstance.id)
     // framer.setParent(nodeLogotypeInstance.id, nodeInstance.id)
 
     return this.node

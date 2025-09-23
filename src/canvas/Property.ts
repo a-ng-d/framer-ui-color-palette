@@ -36,15 +36,15 @@ export default class Property {
     })
 
     // Instances
-    const nodeInstance = await this.node
-    const propertyNodeInstance = await new Tag({
+    const nodePropertyInstance = await this.node
+    const nodeTagInstance = await new Tag({
       name: this.name,
       content: this.content,
       fontSize: this.size,
     }).makeNodeTag()
 
-    if (nodeInstance && propertyNodeInstance) 
-      framer.setParent(propertyNodeInstance.id, nodeInstance.id)
+    if (nodePropertyInstance && nodeTagInstance)
+      framer.setParent(nodeTagInstance.id, nodePropertyInstance.id)
     
 
     return this.node

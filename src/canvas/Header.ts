@@ -47,8 +47,8 @@ export default class Header {
     })
 
     // Instances
-    const nodeInstance = await this.node
-    const nodeSourceColorInstance = await new Sample({
+    const nodeHeaderInstance = await this.node
+    const nodeSampleInstance = await new Sample({
       name: locales.get().paletteProperties.sourceColors,
       rgb: [255, 255, 255],
       colorSpace: this.base.colorSpace,
@@ -62,14 +62,14 @@ export default class Header {
     })
 
     // Insert
-    if (nodeInstance && nodeSourceColorInstance)
-      await framer.setParent(nodeSourceColorInstance.id, nodeInstance.id)
+    if (nodeHeaderInstance && nodeSampleInstance)
+      await framer.setParent(nodeSampleInstance.id, nodeHeaderInstance.id)
 
     if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES') {
       const keys = Object.keys(this.theme.scale).reverse()
 
       for (const key of keys) {
-        const nodeShadeInstance = await new Sample({
+        const nodeSampleShadeInstance = await new Sample({
           name: key,
           rgb: [255, 255, 255],
           colorSpace: this.base.colorSpace,
@@ -82,9 +82,11 @@ export default class Header {
           height: 48,
         })
 
-        if (nodeInstance && nodeShadeInstance) 
-          await framer.setParent(nodeShadeInstance.id, nodeInstance.id)
-        
+        if (nodeHeaderInstance && nodeSampleShadeInstance)
+          await framer.setParent(
+            nodeSampleShadeInstance.id,
+            nodeHeaderInstance.id
+          )
       }
     }
 

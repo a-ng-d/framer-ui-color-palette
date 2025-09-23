@@ -40,6 +40,7 @@ const updateDocument = async (view: ViewConfiguration) => {
   const isAllowedToSetParent = framer.isAllowedTo('setParent')
   const isAllowedToRemoveTextStyle = framer.isAllowedTo('TextStyle.remove')
   const isAllowedToSetAttributes = framer.isAllowedTo('setAttributes')
+  const isAllowedToRemoveChildren = framer.isAllowedTo('removeNodes')
 
   if (
     !isAllowedToCreateFrame ||
@@ -49,9 +50,17 @@ const updateDocument = async (view: ViewConfiguration) => {
     !isAllowedToSetData ||
     !isAllowedToSetParent ||
     !isAllowedToRemoveTextStyle ||
-    !isAllowedToSetAttributes
+    !isAllowedToSetAttributes ||
+    !isAllowedToRemoveChildren
   )
     throw new Error(locales.get().error.document)
+
+  const children = await document.getChildren()
+
+  children.forEach((child) => child.remove())
+  document.setAttributes({
+    backgroundColor: currentTheme.paletteBackground,
+  })
 
   const newDocument =
     view === 'PALETTE_WITH_PROPERTIES' || view === 'PALETTE'
@@ -70,15 +79,10 @@ const updateDocument = async (view: ViewConfiguration) => {
           view: view,
         }).makeNode()
 
-  const children = await document.getChildren()
-  children[0].remove()
-
   if (!newDocument) return null
 
   framer.setParent(newDocument.id, document.id)
-  document.setAttributes({
-    backgroundColor: currentTheme.paletteBackground,
-  })
+  framer.setSelection(document.id)
 
   // Update
   document.setPluginData('view', view)

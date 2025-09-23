@@ -68,21 +68,21 @@ export default class Documents {
         : this.themes.filter((theme) => theme.type === 'custom theme')
 
     // Instances
-    const documentsInstance = await documents
-    const rootInstance = await framer.getCanvasRoot()
+    const nodeDocumentsInstance = await documents
+    const nodeRootInstance = await framer.getCanvasRoot()
 
     for (const [index, theme] of workingThemesData.entries()) {
-      const documentInstance = await this.makeDocument(
+      const nodeDocumentInstance = await this.makeDocument(
         workingThemes[index],
         theme
       )
 
-      if (documentsInstance && documentInstance)
-        framer.setParent(documentInstance.id, documentsInstance.id)
+      if (nodeDocumentsInstance && nodeDocumentInstance)
+        framer.setParent(nodeDocumentInstance.id, nodeDocumentsInstance.id)
     }
 
-    if (documentsInstance && rootInstance)
-      framer.setParent(documentsInstance.id, rootInstance.id)
+    if (nodeDocumentsInstance && nodeRootInstance)
+      framer.setParent(nodeDocumentsInstance.id, nodeRootInstance.id)
 
     return documents
   }
@@ -112,20 +112,20 @@ export default class Documents {
       padding: '32px',
       gap: '0px',
     })
-    const documentInstance = await document
+    const nodeDocumentInstance = await document
 
     // Data
-    if (documentInstance) {
-      documentInstance.setPluginData('type', 'UI_COLOR_PALETTE')
-      documentInstance.setPluginData(
+    if (nodeDocumentInstance) {
+      nodeDocumentInstance.setPluginData('type', 'UI_COLOR_PALETTE')
+      nodeDocumentInstance.setPluginData(
         'version',
         globalConfig.versions.paletteVersion
       )
-      documentInstance.setPluginData('view', this.view)
-      documentInstance.setPluginData('id', this.meta.id)
-      documentInstance.setPluginData('themeId', theme.id)
-      documentInstance.setPluginData('createdAt', new Date().toISOString())
-      documentInstance.setPluginData(
+      nodeDocumentInstance.setPluginData('view', this.view)
+      nodeDocumentInstance.setPluginData('id', this.meta.id)
+      nodeDocumentInstance.setPluginData('themeId', theme.id)
+      nodeDocumentInstance.setPluginData('createdAt', new Date().toISOString())
+      nodeDocumentInstance.setPluginData(
         'updatedAt',
         this.meta.dates.updatedAt as string
       )
@@ -138,12 +138,12 @@ export default class Documents {
       }
 
       if (getJsonSize(backup) < 2)
-        documentInstance.setPluginData('backup', JSON.stringify(backup))
+        nodeDocumentInstance.setPluginData('backup', JSON.stringify(backup))
     }
 
     //Insert
     if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES') {
-      const paletteInstance = await new Palette({
+      const nodePaletteInstance = await new Palette({
         base: this.base,
         theme: theme,
         data: data,
@@ -151,10 +151,10 @@ export default class Documents {
         view: this.view,
       }).makeNode()
 
-      if (paletteInstance && documentInstance)
-        framer.setParent(paletteInstance.id, documentInstance.id)
+      if (nodePaletteInstance && nodeDocumentInstance)
+        framer.setParent(nodePaletteInstance.id, nodeDocumentInstance.id)
     } else {
-      const sheetInstance = await new Sheet({
+      const nodeSheetInstance = await new Sheet({
         base: this.base,
         theme: theme,
         data: data,
@@ -162,8 +162,8 @@ export default class Documents {
         view: this.view,
       }).makeNode()
 
-      if (sheetInstance && documentInstance)
-        framer.setParent(sheetInstance.id, documentInstance.id)
+      if (nodeSheetInstance && nodeDocumentInstance)
+        framer.setParent(nodeSheetInstance.id, nodeDocumentInstance.id)
     }
     return document
   }

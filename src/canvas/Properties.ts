@@ -155,20 +155,16 @@ export default class Properties {
       content: this.name,
       fontSize: 10,
     }).makeNodeTag()
-    const makeNodeBasePropsInstance = await this.makeNodeBaseProps()
+    const nodeBasePropsInstance = await this.makeNodeBaseProps()
 
     // Insert
-    if (
-      !nodeTopPropsInstance ||
-      !nodeTitleInstance ||
-      !makeNodeBasePropsInstance
-    )
+    if (!nodeTopPropsInstance || !nodeTitleInstance || !nodeBasePropsInstance)
       return null
 
     framer.setParent(nodeTitleInstance.id, nodeTopPropsInstance.id)
-    framer.setParent(makeNodeBasePropsInstance.id, nodeTopPropsInstance.id)
+    framer.setParent(nodeBasePropsInstance.id, nodeTopPropsInstance.id)
 
-    makeNodeBasePropsInstance.setAttributes({
+    nodeBasePropsInstance.setAttributes({
       width: '1fr',
     })
 
@@ -856,30 +852,35 @@ export default class Properties {
     })
 
     // Insert
-    const nodeInstance = await this.node
-    const detailedBaseProps = await this.makeNodeDetailedBaseProps()
-    const detailedWCAGScoresProps = await this.makeDetailedWCAGScoresProps()
-    const detailedAPCAScoresProps = await this.makeNodeDetailedAPCAScoresProps()
+    const nodePropertiesDetailedInstance = await this.node
+    const nodeDetailedBasePropsInstance = await this.makeNodeDetailedBaseProps()
+    const nodeDetailedWCAGScoresPropsInstance =
+      await this.makeDetailedWCAGScoresProps()
+    const nodeDetailedAPCAScoresPropsInstance =
+      await this.makeNodeDetailedAPCAScoresProps()
 
     if (
-      !nodeInstance ||
-      !detailedBaseProps ||
-      !detailedWCAGScoresProps ||
-      !detailedAPCAScoresProps
+      !nodePropertiesDetailedInstance ||
+      !nodeDetailedBasePropsInstance ||
+      !nodeDetailedWCAGScoresPropsInstance ||
+      !nodeDetailedAPCAScoresPropsInstance
     )
       return null
 
     const nodeColumnsInstance = await this.makeNodeColumns(
-      [detailedBaseProps],
-      [detailedWCAGScoresProps]
+      [nodeDetailedBasePropsInstance],
+      [nodeDetailedWCAGScoresPropsInstance]
     )
 
     if (!nodeColumnsInstance) return null
 
-    framer.setParent(nodeColumnsInstance.id, nodeInstance.id)
-    framer.setParent(detailedAPCAScoresProps.id, nodeInstance.id)
+    framer.setParent(nodeColumnsInstance.id, nodePropertiesDetailedInstance.id)
+    framer.setParent(
+      nodeDetailedAPCAScoresPropsInstance.id,
+      nodePropertiesDetailedInstance.id
+    )
 
-    detailedAPCAScoresProps.setAttributes({
+    nodeDetailedAPCAScoresPropsInstance.setAttributes({
       width: '1fr',
     })
     nodeColumnsInstance.setAttributes({

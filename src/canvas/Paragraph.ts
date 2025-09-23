@@ -100,12 +100,12 @@ export default class Paragraph {
     })
 
     // Insert
-    const nodeInstance = await this.node
-    const textNodeInstance = await this.makeNodeText()
+    const nodeParagraphInstance = await this.node
+    const nodeTextInstance = await this.makeNodeText()
 
-    if (nodeInstance && textNodeInstance) {
-      framer.setParent(textNodeInstance.id, nodeInstance.id)
-      textNodeInstance.setAttributes({
+    if (nodeParagraphInstance && nodeTextInstance) {
+      framer.setParent(nodeTextInstance.id, nodeParagraphInstance.id)
+      nodeTextInstance.setAttributes({
         width: '1fr',
       })
     }

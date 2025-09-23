@@ -110,13 +110,13 @@ export default class Sample {
       backgroundColor: null,
     })
 
-    if (mode === 'FILL') 
+    if (mode === 'FILL')
       this.children = new Property({
         name: '_large-label',
         content: this.name,
         size: 16,
       }).makeNode()
-     else if (mode === 'FIXED')
+    else if (mode === 'FIXED')
       this.children = new Property({
         name: '_label',
         content: this.name,
@@ -124,13 +124,13 @@ export default class Sample {
       }).makeNode()
 
     // Instances
-    const nodeInstance = await this.node
-    const childrenInstance = await this.children
+    const nodeSampleInstance = await this.node
+    const nodeChildrenInstance = await this.children
 
     // Insert
-    if (nodeInstance && childrenInstance) {
-      framer.setParent(childrenInstance.id, nodeInstance.id)
-      childrenInstance.setAttributes({
+    if (nodeSampleInstance && nodeChildrenInstance) {
+      framer.setParent(nodeChildrenInstance.id, nodeSampleInstance.id)
+      nodeChildrenInstance.setAttributes({
         width: '1fr',
         height: '1fr',
       })
@@ -172,11 +172,11 @@ export default class Sample {
     })
 
     // Instances
-    const nodeInstance = await this.node
+    const nodeSampleInstance = await this.node
 
     // Insert
     if (this.view === 'PALETTE_WITH_PROPERTIES' && !isColorName) {
-      const propertiesNodeInstance = await new Properties({
+      const nodePropertiesInstance = await new Properties({
         name: this.scale ?? '0',
         rgb: this.rgb,
         alpha: this.alpha,
@@ -186,23 +186,23 @@ export default class Sample {
         textColorsTheme: this.textColorsTheme,
       }).makeNode()
 
-      if (nodeInstance && propertiesNodeInstance) {
-        framer.setParent(propertiesNodeInstance.id, nodeInstance.id)
-        propertiesNodeInstance.setAttributes({
+      if (nodeSampleInstance && nodePropertiesInstance) {
+        framer.setParent(nodePropertiesInstance.id, nodeSampleInstance.id)
+        nodePropertiesInstance.setAttributes({
           width: '1fr',
           height: '1fr',
         })
       }
     } else if (isColorName) {
-      const propertyNodeInstance = await new Property({
+      const nodePropertyInstance = await new Property({
         name: '_label',
         content: this.name,
         size: 10,
       }).makeNode()
 
-      if (nodeInstance && propertyNodeInstance) {
-        framer.setParent(propertyNodeInstance.id, nodeInstance.id)
-        propertyNodeInstance.setAttributes({
+      if (nodeSampleInstance && nodePropertyInstance) {
+        framer.setParent(nodePropertyInstance.id, nodeSampleInstance.id)
+        nodePropertyInstance.setAttributes({
           width: '1fr',
           height: '1fr',
         })
@@ -214,16 +214,16 @@ export default class Sample {
       this.status.isLocked ||
       this.status.isTransparent
     ) {
-      const statusNodeInstance = await new Status({
+      const nodeStatusInstance = await new Status({
         status: this.status,
         source: this.source
           ? { r: this.source.r, g: this.source.g, b: this.source.b }
           : {},
       }).makeNode()
 
-      if (nodeInstance && statusNodeInstance) {
-        framer.setParent(statusNodeInstance.id, nodeInstance.id)
-        statusNodeInstance.setAttributes({
+      if (nodeSampleInstance && nodeStatusInstance) {
+        framer.setParent(nodeStatusInstance.id, nodeSampleInstance.id)
+        nodeStatusInstance.setAttributes({
           width: '1fr',
         })
       }
@@ -278,19 +278,19 @@ export default class Sample {
     })
 
     // Insert
-    const nodeInstance = await this.node
+    const nodeSampleInstance = await this.node
     const nodeColorInstance = await this.nodeColor
-    const propertyNodeInstance = await new Property({
+    const nodePropertyInstance = await new Property({
       name: '_label',
       content: name,
       size: 10,
     }).makeNode()
 
-    if (!nodeColorInstance || !propertyNodeInstance) return null
+    if (!nodeColorInstance || !nodePropertyInstance) return null
 
-    framer.setParent(propertyNodeInstance.id, nodeColorInstance.id)
+    framer.setParent(nodePropertyInstance.id, nodeColorInstance.id)
 
-    propertyNodeInstance.setAttributes({
+    nodePropertyInstance.setAttributes({
       width: '1fr',
       height: '1fr',
     })
@@ -300,31 +300,31 @@ export default class Sample {
       this.status.isLocked ||
       this.status.isTransparent
     ) {
-      const statusNodeInstance = await new Status({
+      const nodeStatusInstance = await new Status({
         status: this.status,
         source: this.source
           ? { r: this.source.r, g: this.source.g, b: this.source.b }
           : {},
       }).makeNode()
 
-      if (!nodeColorInstance || !statusNodeInstance) return null
+      if (!nodeColorInstance || !nodeStatusInstance) return null
 
-      framer.setParent(statusNodeInstance.id, nodeColorInstance.id)
+      framer.setParent(nodeStatusInstance.id, nodeColorInstance.id)
 
-      statusNodeInstance.setAttributes({
+      nodeStatusInstance.setAttributes({
         width: '1fr',
       })
     }
 
-    if (!nodeInstance || !nodeColorInstance) return null
+    if (!nodeSampleInstance || !nodeColorInstance) return null
 
-    framer.setParent(nodeColorInstance.id, nodeInstance.id)
+    framer.setParent(nodeColorInstance.id, nodeSampleInstance.id)
 
     nodeColorInstance.setAttributes({
       width: '1fr',
     })
     if (isColorName && description !== '') {
-      const paragraphNodeInstance = await new Paragraph({
+      const nodeParagraphInstance = await new Paragraph({
         name: '_description',
         content: description,
         type: 'FILL',
@@ -332,15 +332,15 @@ export default class Sample {
         fontFamily: 'Lexend',
       }).makeNode()
 
-      if (!nodeInstance || !paragraphNodeInstance) return null
+      if (!nodeSampleInstance || !nodeParagraphInstance) return null
 
-      framer.setParent(paragraphNodeInstance.id, nodeInstance.id)
+      framer.setParent(nodeParagraphInstance.id, nodeSampleInstance.id)
 
-      paragraphNodeInstance.setAttributes({
+      nodeParagraphInstance.setAttributes({
         width: '1fr',
       })
     } else if (!isColorName) {
-      const propertiesNodeInstance = await new Properties({
+      const nodePropertiesInstance = await new Properties({
         name: this.scale ?? '0',
         rgb: this.rgb,
         alpha: this.alpha,
@@ -350,11 +350,11 @@ export default class Sample {
         textColorsTheme: this.textColorsTheme,
       }).makeNodeDetailed()
 
-      if (!nodeInstance || !propertiesNodeInstance) return null
+      if (!nodeSampleInstance || !nodePropertiesInstance) return null
 
-      framer.setParent(propertiesNodeInstance.id, nodeInstance.id)
+      framer.setParent(nodePropertiesInstance.id, nodeSampleInstance.id)
 
-      propertiesNodeInstance.setAttributes({
+      nodePropertiesInstance.setAttributes({
         width: '1fr',
         height: '1fr',
       })

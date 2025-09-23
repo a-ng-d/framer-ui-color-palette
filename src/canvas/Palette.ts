@@ -68,7 +68,7 @@ export default class Palette {
 
     // Insert
     const nodeEmptyInstance = await this.nodeEmpty
-    const nodeMessageInstance = await new Sample({
+    const nodeSampleInstance = await new Sample({
       name: locales.get().warning.emptySourceColors,
       rgb: [255, 255, 255],
       colorSpace: this.base.colorSpace,
@@ -81,8 +81,8 @@ export default class Palette {
       height: 48,
     })
 
-    if (nodeEmptyInstance && nodeMessageInstance)
-      framer.setParent(nodeMessageInstance.id, nodeEmptyInstance.id)
+    if (nodeEmptyInstance && nodeSampleInstance)
+      framer.setParent(nodeSampleInstance.id, nodeEmptyInstance.id)
 
     return this.nodeEmpty
   }
@@ -257,7 +257,7 @@ export default class Palette {
     })
 
     // Instances
-    const nodeInstance = await this.node
+    const nodePaletteInstance = await this.node
     const nodeTitleInstance = await new Title({
       base: this.base,
       theme: this.theme,
@@ -269,16 +269,16 @@ export default class Palette {
 
     // Insert
     if (
-      !nodeInstance ||
+      !nodePaletteInstance ||
       !nodeTitleInstance ||
       !nodeShadesInstance ||
       !nodeSignatureInstance
     )
       return null
 
-    framer.setParent(nodeTitleInstance.id, nodeInstance.id)
-    framer.setParent(nodeShadesInstance.id, nodeInstance.id)
-    framer.setParent(nodeSignatureInstance.id, nodeInstance.id)
+    framer.setParent(nodeTitleInstance.id, nodePaletteInstance.id)
+    framer.setParent(nodeShadesInstance.id, nodePaletteInstance.id)
+    framer.setParent(nodeSignatureInstance.id, nodePaletteInstance.id)
 
     nodeTitleInstance.setAttributes({
       width: '1fr',

@@ -50,40 +50,40 @@ export default class Status {
     })
 
     // Instances
-    const nodeInstance = await this.node
+    const nodeStatusInstance = await this.node
 
     // Insert
     if (this.status.isClosestToRef && !this.status.isTransparent) {
-      const closestNode = await new Tag({
+      const nodeTagInstance = await new Tag({
         name: '_close',
         content: locales.get().paletteProperties.closest,
         fontSize: 10,
       }).makeNodeTag()
 
-      if (closestNode && nodeInstance)
-        framer.setParent(closestNode.id, nodeInstance.id)
+      if (nodeTagInstance && nodeStatusInstance)
+        framer.setParent(nodeTagInstance.id, nodeStatusInstance.id)
     }
 
     if (this.status.isLocked && !this.status.isClosestToRef) {
-      const isLockedNode = await new Tag({
+      const nodeTagLockInstance = await new Tag({
         name: '_lock',
         content: locales.get().paletteProperties.locked,
         fontSize: 10,
       }).makeNodeTag()
 
-      if (isLockedNode && nodeInstance)
-        framer.setParent(isLockedNode.id, nodeInstance.id)
+      if (nodeTagLockInstance && nodeStatusInstance)
+        framer.setParent(nodeTagLockInstance.id, nodeStatusInstance.id)
     }
 
     if (this.status.isTransparent) {
-      const isTransparentNode = await new Tag({
+      const nodeTagTransparentInstance = await new Tag({
         name: '_transparent',
         content: 'Transparent',
         fontSize: 10,
       }).makeNodeTag()
 
-      if (isTransparentNode && nodeInstance)
-        framer.setParent(isTransparentNode.id, nodeInstance.id)
+      if (nodeTagTransparentInstance && nodeStatusInstance)
+        framer.setParent(nodeTagTransparentInstance.id, nodeStatusInstance.id)
     }
 
     return this.node

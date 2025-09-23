@@ -86,10 +86,10 @@ export default class Tag {
 
     // Insert
     const nodeTagInstance = await this.nodeTag
-    const textNodeInstance = await this.makeNodeText()
+    const nodeTextInstance = await this.makeNodeText()
 
-    if (textNodeInstance && nodeTagInstance)
-      framer.setParent(textNodeInstance.id, nodeTagInstance.id)
+    if (nodeTextInstance && nodeTagInstance)
+      framer.setParent(nodeTextInstance.id, nodeTagInstance.id)
 
     return this.nodeTag
   }
@@ -126,10 +126,10 @@ export default class Tag {
       gl[1],
       gl[2],
     ])
-    const textNodeInstance = await this.makeNodeText()
+    const nodeTextInstance = await this.makeNodeText()
 
     if (
-      textNodeInstance &&
+      nodeTextInstance &&
       nodeIndicatorInstance &&
       nodeTagwithIndicatorInstance
     ) {
@@ -138,7 +138,7 @@ export default class Tag {
         nodeTagwithIndicatorInstance.id,
         0
       )
-      framer.setParent(textNodeInstance.id, nodeTagwithIndicatorInstance.id, 1)
+      framer.setParent(nodeTextInstance.id, nodeTagwithIndicatorInstance.id, 1)
     }
 
     return this.nodeTagwithIndicator
@@ -171,12 +171,12 @@ export default class Tag {
 
     // Insert
     const nodeTagWithAvatarInstance = await this.nodeTagWithAvatar
-    const textNode = await this.makeNodeText()
-    const avatarNode = await this.makeNodeAvatar(image)
+    const nodeTextInstance = await this.makeNodeText()
+    const nodeAvatarInstance = await this.makeNodeAvatar(image)
 
-    if (textNode && avatarNode && nodeTagWithAvatarInstance) {
-      framer.setParent(textNode.id, nodeTagWithAvatarInstance.id, 0)
-      framer.setParent(avatarNode.id, nodeTagWithAvatarInstance.id, 1)
+    if (nodeTextInstance && nodeAvatarInstance && nodeTagWithAvatarInstance) {
+      framer.setParent(nodeTextInstance.id, nodeTagWithAvatarInstance.id, 0)
+      framer.setParent(nodeAvatarInstance.id, nodeTagWithAvatarInstance.id, 1)
     }
 
     return this.nodeTagWithAvatar

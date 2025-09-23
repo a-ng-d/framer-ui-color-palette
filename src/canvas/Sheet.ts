@@ -72,7 +72,7 @@ export default class Sheet {
 
     // Insert
     const nodeEmptyInstance = await this.nodeEmpty
-    const nodeMessageInstance = await new Sample({
+    const nodeSampleInstance = await new Sample({
       name: locales.get().warning.emptySourceColors,
       rgb: [255, 255, 255],
       colorSpace: this.base.colorSpace,
@@ -85,8 +85,8 @@ export default class Sheet {
       height: 48,
     })
 
-    if (nodeEmptyInstance && nodeMessageInstance)
-      framer.setParent(nodeMessageInstance.id, nodeEmptyInstance.id)
+    if (nodeEmptyInstance && nodeSampleInstance)
+      framer.setParent(nodeSampleInstance.id, nodeEmptyInstance.id)
 
     return this.nodeEmpty
   }
@@ -274,7 +274,7 @@ export default class Sheet {
     })
 
     // Instances
-    const nodeInstance = await this.node
+    const nodeSheetInstance = await this.node
     const nodeTitleInstance = await new Title({
       base: this.base,
       theme: this.theme,
@@ -286,16 +286,16 @@ export default class Sheet {
 
     // Insert
     if (
-      !nodeInstance ||
+      !nodeSheetInstance ||
       !nodeTitleInstance ||
       !nodeShadesInstance ||
       !nodeSignatureInstance
     )
       return null
 
-    framer.setParent(nodeTitleInstance.id, nodeInstance.id)
-    framer.setParent(nodeShadesInstance.id, nodeInstance.id)
-    framer.setParent(nodeSignatureInstance.id, nodeInstance.id)
+    framer.setParent(nodeTitleInstance.id, nodeSheetInstance.id)
+    framer.setParent(nodeShadesInstance.id, nodeSheetInstance.id)
+    framer.setParent(nodeSignatureInstance.id, nodeSheetInstance.id)
 
     nodeTitleInstance.setAttributes({
       width: '1fr',

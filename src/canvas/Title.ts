@@ -199,7 +199,7 @@ export default class Title {
         .paletteProperties.preset.replace('{name}', this.base.preset.name),
       fontSize: 12,
     }).makeNodeTag()
-    const colorSpaceInstance = await new Tag({
+    const nodeColorSpaceInstance = await new Tag({
       name: '_color-space',
       content: locales
         .get()
@@ -207,9 +207,9 @@ export default class Title {
       fontSize: 12,
     }).makeNodeTag()
 
-    if (nodePropsInstance && nodePresetInstance && colorSpaceInstance) {
+    if (nodePropsInstance && nodePresetInstance && nodeColorSpaceInstance) {
       framer.setParent(nodePresetInstance.id, nodePropsInstance.id)
-      framer.setParent(colorSpaceInstance.id, nodePropsInstance.id)
+      framer.setParent(nodeColorSpaceInstance.id, nodePropsInstance.id)
     }
 
     if (this.base.visionSimulationMode !== 'NONE') {
@@ -259,15 +259,15 @@ export default class Title {
     })
 
     // Insert
-    const nodeInstance = await this.node
+    const nodeTitleInstance = await this.node
     const nodeGlobalInfoInstance = await this.makeNodeGlobalInfo()
     const nodePropsInstance = await this.makeNodeProps()
 
-    if (!nodeInstance || !nodeGlobalInfoInstance || !nodePropsInstance)
+    if (!nodeTitleInstance || !nodeGlobalInfoInstance || !nodePropsInstance)
       return null
 
-    framer.setParent(nodeGlobalInfoInstance.id, nodeInstance.id)
-    framer.setParent(nodePropsInstance.id, nodeInstance.id)
+    framer.setParent(nodeGlobalInfoInstance.id, nodeTitleInstance.id)
+    framer.setParent(nodePropsInstance.id, nodeTitleInstance.id)
 
     return this.node
   }
