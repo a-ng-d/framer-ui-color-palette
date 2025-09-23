@@ -36,6 +36,9 @@ const createLocalStyles = async (id: string) => {
         filteredItems.map(async (item) => {
           const path = [
             item.paletteName,
+            item.themeName === ''
+              ? locales.get().themes.defaultName
+              : item.themeName,
             item.colorName === ''
               ? locales.get().colors.defaultName
               : item.colorName,
@@ -61,10 +64,48 @@ const createLocalStyles = async (id: string) => {
             item.gl !== undefined &&
             isAllowedToCreate
           ) {
+            let darkRgba = lightRgba
+
+            const sameColorItems = filteredItems.filter(
+              (colorItem) =>
+                colorItem.themeName === item.themeName &&
+                colorItem.colorName === item.colorName &&
+                colorItem.shadeName !== 'source'
+            )
+
+            if (sameColorItems.length > 1) {
+              const currentIndex = sameColorItems.findIndex(
+                (colorItem) => colorItem.id === item.id
+              )
+
+              if (currentIndex !== -1) {
+                const totalShades = sameColorItems.length
+                const oppositeIndex = totalShades - 1 - currentIndex
+
+                if (
+                  oppositeIndex >= 0 &&
+                  oppositeIndex < totalShades &&
+                  oppositeIndex !== currentIndex
+                ) {
+                  const oppositeItem = sameColorItems[oppositeIndex]
+
+                  if (oppositeItem.gl !== undefined)
+                    if (oppositeItem.alpha !== 1)
+                      darkRgba = `rgba(${Math.floor(oppositeItem.gl[0] * 255)}, ${Math.floor(
+                        oppositeItem.gl[1] * 255
+                      )}, ${Math.floor(oppositeItem.gl[2] * 255)}, ${oppositeItem.alpha})`
+                    else
+                      darkRgba = `rgb(${Math.floor(oppositeItem.gl[0] * 255)}, ${Math.floor(
+                        oppositeItem.gl[1] * 255
+                      )}, ${Math.floor(oppositeItem.gl[2] * 255)})`
+                }
+              }
+            }
+
             const style = new LocalStyle({
               name: path,
               light: lightRgba,
-              dark: lightRgba,
+              dark: item.shadeName !== 'source' ? darkRgba : lightRgba,
             })
 
             item.styleId = (await style.libraryColor).id
