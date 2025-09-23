@@ -4,5 +4,5 @@
   "modes": [
     "canvas"
   ],
-  "icon": "/public/icon.svg"
+  "icon": "/plugin_icon.svg"
 }
