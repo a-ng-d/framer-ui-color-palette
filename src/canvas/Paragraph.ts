@@ -61,7 +61,7 @@ export default class Paragraph {
 
     const nodeTextInstance = this.nodeText
 
-    if (nodeTextInstance) {
+    if (nodeTextInstance) 
       nodeTextInstance.setAttributes({
         name: '_text',
         color: '#000000',
@@ -75,7 +75,7 @@ export default class Paragraph {
         lineHeight: '130%',
         alignment: 'start',
       })
-    }
+    
 
     return this.nodeText
   }

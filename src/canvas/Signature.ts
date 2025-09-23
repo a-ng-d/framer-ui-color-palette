@@ -1,7 +1,7 @@
 import { FrameNode, framer, SVGNode } from 'framer-plugin'
+import getAddedNodesDuring from '../utils/getAddedNodesDuring'
 import { locales } from '../content/locales'
 import Tag from './Tag'
-import getAddedNodesDuring from '../utils/getAddedNodesDuring'
 
 export default class Signature {
   private nodeInfo: Promise<FrameNode | null> | null

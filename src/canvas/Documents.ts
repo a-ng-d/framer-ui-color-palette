@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -7,11 +8,10 @@ import {
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import setPaletteName from '../utils/setPaletteName'
+import { getJsonSize } from '../utils/getSize'
 import globalConfig from '../global.config'
 import Sheet from './Sheet'
 import Palette from './Palette'
-import { FrameNode, framer } from 'framer-plugin'
-import { getJsonSize } from '../utils/getSize'
 
 export default class Documents {
   private base: BaseConfiguration

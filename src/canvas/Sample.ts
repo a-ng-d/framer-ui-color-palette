@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import chroma from 'chroma-js'
 import {
   Channel,
@@ -12,7 +13,6 @@ import Status from './Status'
 import Property from './Property'
 import Properties from './Properties'
 import Paragraph from './Paragraph'
-import { FrameNode, framer } from 'framer-plugin'
 
 export default class Sample {
   private name: string
@@ -110,13 +110,13 @@ export default class Sample {
       backgroundColor: null,
     })
 
-    if (mode === 'FILL') {
+    if (mode === 'FILL') 
       this.children = new Property({
         name: '_large-label',
         content: this.name,
         size: 16,
       }).makeNode()
-    } else if (mode === 'FIXED')
+     else if (mode === 'FIXED')
       this.children = new Property({
         name: '_label',
         content: this.name,

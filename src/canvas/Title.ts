@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -7,7 +8,6 @@ import {
 import { locales } from '../content/locales'
 import Tag from './Tag'
 import Paragraph from './Paragraph'
-import { FrameNode, framer } from 'framer-plugin'
 
 export default class Title {
   private base: BaseConfiguration

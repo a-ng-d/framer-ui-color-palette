@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import React from 'react'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
 import {
@@ -17,9 +18,9 @@ import loadUI from '../bridges/loadUI'
 loadUI()
 
 const container = document.getElementById('app')
-if (!container) {
+if (!container)
   throw new Error("Root container element with id 'app' not found.")
-}
+
 const root = createRoot(container)
 
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN

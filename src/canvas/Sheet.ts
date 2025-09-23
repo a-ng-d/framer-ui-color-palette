@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -10,7 +11,6 @@ import Title from './Title'
 import Signature from './Signature'
 import Sample from './Sample'
 import Header from './Header'
-import { FrameNode, framer } from 'framer-plugin'
 
 export default class Sheet {
   private base: BaseConfiguration

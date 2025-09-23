@@ -43,9 +43,9 @@ export default class Property {
       fontSize: this.size,
     }).makeNodeTag()
 
-    if (nodeInstance && propertyNodeInstance) {
+    if (nodeInstance && propertyNodeInstance) 
       framer.setParent(propertyNodeInstance.id, nodeInstance.id)
-    }
+    
 
     return this.node
   }

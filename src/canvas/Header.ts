@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import {
   BaseConfiguration,
   ThemeConfiguration,
@@ -5,7 +6,6 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../content/locales'
 import Sample from './Sample'
-import { FrameNode, framer } from 'framer-plugin'
 
 export default class Header {
   private base: BaseConfiguration
@@ -82,9 +82,9 @@ export default class Header {
           height: 48,
         })
 
-        if (nodeInstance && nodeShadeInstance) {
+        if (nodeInstance && nodeShadeInstance) 
           await framer.setParent(nodeShadeInstance.id, nodeInstance.id)
-        }
+        
       }
     }
 

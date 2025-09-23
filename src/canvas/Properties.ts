@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import chroma from 'chroma-js'
 import {
   Channel,
@@ -10,7 +11,6 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../content/locales'
 import Tag from './Tag'
-import { FrameNode, framer } from 'framer-plugin'
 
 export default class Properties {
   private name: string

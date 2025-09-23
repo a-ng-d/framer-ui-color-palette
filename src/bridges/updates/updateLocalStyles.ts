@@ -1,6 +1,6 @@
+import { framer } from 'framer-plugin'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../../content/locales'
-import { framer } from 'framer-plugin'
 
 const updateLocalStyles = async (id: string) => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
@@ -116,9 +116,7 @@ const updateLocalStyles = async (id: string) => {
               j++
             }
 
-            if (j > 0) {
-              i++
-            }
+            if (j > 0) i++
           }
         })
       )

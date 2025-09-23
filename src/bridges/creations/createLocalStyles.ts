@@ -1,7 +1,7 @@
+import { framer } from 'framer-plugin'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../../content/locales'
 import LocalStyle from '../../canvas/LocalStyle'
-import { framer } from 'framer-plugin'
 
 const createLocalStyles = async (id: string) => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)

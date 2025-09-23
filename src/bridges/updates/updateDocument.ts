@@ -1,3 +1,4 @@
+import { FrameNode, framer } from 'framer-plugin'
 import {
   Data,
   FullConfiguration,
@@ -5,11 +6,10 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { getJsonSize } from '../../utils/getSize'
 import { locales } from '../../content/locales'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
-import { FrameNode, framer } from 'framer-plugin'
-import { getJsonSize } from '../../utils/getSize'
 
 const updateDocument = async (view: ViewConfiguration) => {
   const document = (await framer.getSelection())[0] as FrameNode

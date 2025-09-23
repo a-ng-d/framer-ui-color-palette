@@ -15,7 +15,8 @@ export const getJsonSize = (obj: any): number => {
     }
 
     return parseFloat((size / 1024).toFixed(2))
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     return 100
   }
 }

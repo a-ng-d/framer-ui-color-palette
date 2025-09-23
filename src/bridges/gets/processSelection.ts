@@ -1,9 +1,4 @@
 import { uid } from 'uid'
-import chroma from 'chroma-js'
-import {
-  HexModel,
-  SourceColorConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
 import {
   CanvasNode,
   FrameNode,
@@ -12,6 +7,11 @@ import {
   isComponentNode,
   isFrameNode,
 } from 'framer-plugin'
+import chroma from 'chroma-js'
+import {
+  HexModel,
+  SourceColorConfiguration,
+} from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../../content/locales'
 
 export let currentSelection: Array<CanvasNode> = []

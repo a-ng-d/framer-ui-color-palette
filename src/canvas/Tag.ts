@@ -1,6 +1,6 @@
+import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
-import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
 
 export default class Tag {
@@ -207,7 +207,7 @@ export default class Tag {
 
     const nodeTextInstance = this.nodeText
 
-    if (nodeTextInstance) {
+    if (nodeTextInstance) 
       nodeTextInstance.setAttributes({
         name: '_text',
         color: '#000000',
@@ -222,7 +222,7 @@ export default class Tag {
         alignment: 'center',
         link: this.url ? this.url : undefined,
       })
-    }
+    
 
     return this.nodeText
   }
