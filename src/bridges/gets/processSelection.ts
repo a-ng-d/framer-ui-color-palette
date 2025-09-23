@@ -43,7 +43,7 @@ const processSelection = async () => {
             id,
             updatedAt,
             isLinkedToPalette:
-              window.localStorage.getItem(`palette_${id}`) !== '',
+              window.localStorage.getItem(`palette_${id}`) !== null,
           },
         })
       },

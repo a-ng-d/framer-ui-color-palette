@@ -8,9 +8,11 @@ const createPaletteFromDocument = async () => {
 
   if (document === null) throw new Error(locales.get().error.unfoundPalette)
 
-  const backup = JSON.parse(
-    (await document.getPluginData('backup')) ?? '{}'
-  ) as FullConfiguration
+  const backupRaw = await document.getPluginData('backup')
+
+  if (backupRaw === null) throw new Error(locales.get().error.palette)
+
+  const backup = JSON.parse(backupRaw) as FullConfiguration
 
   window.localStorage.setItem(
     `palette_${backup.meta.id}`,

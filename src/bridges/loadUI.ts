@@ -122,23 +122,32 @@ const loadUI = async () => {
           window.postMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
-        createPaletteFromDocument().finally(() =>
-          window.postMessage({ type: 'STOP_LOADER' })
-        ),
-      CREATE_PALETTE_FROM_REMOTE: () =>
-        createPaletteFromRemote(path)
+        createPaletteFromDocument()
+          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             console.error(error)
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
-                type: 'INFO',
+                type: 'ERROR',
                 message: error.message,
               },
             })
-          })
+          }),
+      CREATE_PALETTE_FROM_REMOTE: () =>
+        createPaletteFromRemote(path)
           .finally(() => {
             window.postMessage({ type: 'STOP_LOADER' })
+          })
+          .catch((error) => {
+            console.error(error)
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
           }),
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)

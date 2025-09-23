@@ -49,7 +49,8 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   const children = await documentsInstance.getChildren()
   framer
     .setSelection(children.map((child) => child.id))
-    .then(() => framer.zoomIntoView(children.map((child) => child.id)))
+
+  setTimeout(() => framer.zoomIntoView(children.map((child) => child.id)), 1000)
 
   return palette
 }
