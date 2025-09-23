@@ -29,28 +29,30 @@ const processSelection = async () => {
 
   const document = selection[0] as FrameNode
 
-  const selectionHandler = (state: string) => {
-    const actions: { [key: string]: () => void } = {
+  const selectionHandler = async (state: string) => {
+    const actions: { [key: string]: () => Promise<void> } = {
       DOCUMENT_SELECTED: async () => {
+        const view = await document.getPluginData('view')
+        const id = await document.getPluginData('id')
+        const updatedAt = await document.getPluginData('updatedAt')
+
         window.postMessage({
           type: 'DOCUMENT_SELECTED',
           data: {
-            view: document.getPluginData('view'),
-            id: document.getPluginData('id'),
-            updatedAt: document.getPluginData('updatedAt'),
+            view,
+            id,
+            updatedAt,
             isLinkedToPalette:
-              window.localStorage.getPluginData(
-                `palette_${document.getPluginData('id')}`
-              ) !== '',
+              window.localStorage.getItem(`palette_${id}`) !== '',
           },
         })
       },
-      EMPTY_SELECTION: () =>
+      EMPTY_SELECTION: async () =>
         window.postMessage({
           type: 'EMPTY_SELECTION',
           data: {},
         }),
-      COLOR_SELECTED: () => {
+      COLOR_SELECTED: async () => {
         window.postMessage({
           type: 'COLOR_SELECTED',
           data: {
@@ -60,7 +62,7 @@ const processSelection = async () => {
       },
     }
 
-    return actions[state]?.()
+    return actions[state] ? await actions[state]() : undefined
   }
 
   if (
@@ -68,26 +70,26 @@ const processSelection = async () => {
     (await document.getPluginData('type')) === 'UI_COLOR_PALETTE' &&
     !(isComponentNode(document) || isComponentInstanceNode(document))
   )
-    selectionHandler('DOCUMENT_SELECTED')
+    await selectionHandler('DOCUMENT_SELECTED')
   else if (
     selection.length === 1 &&
     (await document.getPluginDataKeys()).length > 0 &&
     !(isComponentInstanceNode(document) || isComponentNode(document))
   )
-    selectionHandler('DOCUMENT_SELECTED')
-  else if (selection.length === 0) selectionHandler('EMPTY_SELECTION')
+    await selectionHandler('DOCUMENT_SELECTED')
+  else if (selection.length === 0) await selectionHandler('EMPTY_SELECTION')
   else if (
     selection.length > 1 &&
     (await document.getPluginDataKeys()).length !== 0
   )
-    selectionHandler('EMPTY_SELECTION')
+    await selectionHandler('EMPTY_SELECTION')
   else if (
     isComponentInstanceNode(selection[0]) ||
     isComponentNode(selection[0])
   )
-    selectionHandler('EMPTY_SELECTION')
+    await selectionHandler('EMPTY_SELECTION')
   else if ((selection[0] as FrameNode) === null)
-    selectionHandler('EMPTY_SELECTION')
+    await selectionHandler('EMPTY_SELECTION')
 
   selection.forEach(async (element: CanvasNode) => {
     const hasColor = (element as FrameNode).backgroundColor !== null
@@ -113,7 +115,7 @@ const processSelection = async () => {
             isLocked: false,
           },
         })
-        selectionHandler('COLOR_SELECTED')
+        await selectionHandler('COLOR_SELECTED')
       }
   })
 

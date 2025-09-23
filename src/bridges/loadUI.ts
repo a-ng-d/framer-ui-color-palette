@@ -20,6 +20,8 @@ import deletePalette from './creations/deletePalette'
 import enableTrial from './enableTrial'
 import createLocalStyles from './creations/createLocalStyles'
 import updateLocalStyles from './updates/updateLocalStyles'
+import createDocument from './creations/createDocument'
+import processSelection from './processSelection'
 
 const loadUI = async () => {
   interface Window {
@@ -150,8 +152,18 @@ const loadUI = async () => {
             })
           }),
       CREATE_DOCUMENT: () => {
-        window.postMessage({ type: 'STOP_LOADER' })
-        console.log('Create document', path)
+        createDocument(path.id, path.view)
+          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            console.error(error)
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          })
       },
       //
       POST_MESSAGE: () => {
@@ -277,6 +289,9 @@ const loadUI = async () => {
       return actions['DEFAULT']?.()
     }
   })
+
+  // Listeners
+  framer.subscribeToSelection(() => processSelection())
 }
 
 export default loadUI
