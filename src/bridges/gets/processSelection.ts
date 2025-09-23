@@ -12,7 +12,7 @@ import {
   isComponentNode,
   isFrameNode,
 } from 'framer-plugin'
-import { locales } from '../content/locales'
+import { locales } from '../../content/locales'
 
 export let currentSelection: Array<CanvasNode> = []
 export let previousSelection: Array<CanvasNode> = []
