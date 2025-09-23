@@ -25,30 +25,31 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   const isAllowedToSetAttributes = framer.isAllowedTo('setAttributes')
 
   if (
-    isAllowedToCreateFrame &&
-    isAllowedToCreateText &&
-    isAllowedToAddSVG &&
-    isAllowedToCreateTextStyle &&
-    isAllowedToSetData &&
-    isAllowedToSetParent &&
-    isAllowedToRemoveTextStyle &&
-    isAllowedToSetAttributes
-  ) {
-    const documentsInstance = await new Documents({
-      base: palette.base,
-      themes: palette.themes,
-      data: new Data(palette).makePaletteData(),
-      meta: palette.meta,
-      view: view,
-    }).makeDocuments()
+    !isAllowedToCreateFrame ||
+    !isAllowedToCreateText ||
+    !isAllowedToAddSVG ||
+    !isAllowedToCreateTextStyle ||
+    !isAllowedToSetData ||
+    !isAllowedToSetParent ||
+    !isAllowedToRemoveTextStyle ||
+    !isAllowedToSetAttributes
+  )
+    throw new Error(locales.get().error.document)
 
-    if (!documentsInstance) throw new Error(locales.get().error.document)
+  const documentsInstance = await new Documents({
+    base: palette.base,
+    themes: palette.themes,
+    data: new Data(palette).makePaletteData(),
+    meta: palette.meta,
+    view: view,
+  }).makeDocuments()
 
-    const children = await documentsInstance.getChildren()
-    framer
-      .setSelection(children.map((child) => child.id))
-      .then(() => framer.zoomIntoView(children.map((child) => child.id)))
-  } else throw new Error(locales.get().error.document)
+  if (!documentsInstance) throw new Error(locales.get().error.document)
+
+  const children = await documentsInstance.getChildren()
+  framer
+    .setSelection(children.map((child) => child.id))
+    .then(() => framer.zoomIntoView(children.map((child) => child.id)))
 
   return palette
 }

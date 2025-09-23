@@ -22,6 +22,8 @@ import createLocalStyles from './creations/createLocalStyles'
 import updateLocalStyles from './updates/updateLocalStyles'
 import createDocument from './creations/createDocument'
 import processSelection from './processSelection'
+import updateDocument from './updates/updateDocument'
+import createPaletteFromDocument from './updates/createPaletteFromDocument'
 
 const loadUI = async () => {
   interface Window {
@@ -98,8 +100,17 @@ const loadUI = async () => {
           shouldLoadPalette: path.shouldLoadPalette,
         }),
       UPDATE_DOCUMENT: () => {
-        window.postMessage({ type: 'STOP_LOADER' })
-        console.log('Update document', path)
+        updateDocument(path.view)
+          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          })
       },
       UPDATE_LANGUAGE: () => {
         window.localStorage.setItem('user_language', path.data.lang)
@@ -111,7 +122,9 @@ const loadUI = async () => {
           window.postMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
-        console.log('Create palette from document', path),
+        createPaletteFromDocument().finally(() =>
+          window.postMessage({ type: 'STOP_LOADER' })
+        ),
       CREATE_PALETTE_FROM_REMOTE: () =>
         createFromRemote(path)
           .catch((error) => {
@@ -248,13 +261,10 @@ const loadUI = async () => {
         window.postMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE', 'ONE_FIGMA', 'FIGMA'],
+            plans: ['ONE'],
           },
         }),
       GO_TO_ONE: async () => window.open(globalConfig.urls.storeUrl, '_blank'),
-      GO_TO_ONE_FIGMA: async () =>
-        window.open('https://uicp.ylb.lt/run-figma-plugin', '_blank'),
-      GO_TO_CHECKOUT: async () => console.log('Pay Pro Plan', path),
       ENABLE_PRO_PLAN: async () =>
         window.postMessage({
           type: 'ENABLE_PRO_PLAN',
