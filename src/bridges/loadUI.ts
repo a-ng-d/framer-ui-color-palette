@@ -12,10 +12,10 @@ import updateSettings from './updates/updateSettings'
 import updatePalette from './updates/updatePalette'
 import { locales } from '../content/locales'
 import createPalette from './creations/createPalette'
-import createFromRemote from './creations/createFromRemote'
+import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import getPalettesOnCurrentPage from './gets/getPalettesOnCurrentPage'
 import jumpToPalette from './gets/jumpToPalette'
-import createPaletteFromDuplication from './creations/createFromDuplication'
+import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import deletePalette from './deletions/deletePalette'
 import enableTrial from './plans/enableTrial'
 import createLocalStyles from './creations/createLocalStyles'
@@ -126,7 +126,7 @@ const loadUI = async () => {
           window.postMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_REMOTE: () =>
-        createFromRemote(path)
+        createPaletteFromRemote(path)
           .catch((error) => {
             console.error(error)
             window.postMessage({

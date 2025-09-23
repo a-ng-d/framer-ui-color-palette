@@ -14,7 +14,7 @@ interface Msg {
   }
 }
 
-const createFromRemote = async (msg: Msg) => {
+const createPaletteFromRemote = async (msg: Msg) => {
   const localPalette = window.localStorage.getItem(
     `palette_${msg.data.meta.id}`
   )
@@ -64,4 +64,4 @@ const createFromRemote = async (msg: Msg) => {
   })
 }
 
-export default createFromRemote
+export default createPaletteFromRemote
