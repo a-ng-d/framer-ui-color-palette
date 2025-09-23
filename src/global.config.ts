@@ -23,7 +23,7 @@ const globalConfig: Config = {
     pluginId: 'e4cdcc',
   },
   plan: {
-    isProEnabled: false,
+    isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
   },
