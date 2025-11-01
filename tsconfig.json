@@ -24,6 +24,7 @@
     "typeRoots": [
       "./node_modules/@types",
     ],
+    "types": [],
     "skipLibCheck": true,
 
     /* Linting */
@@ -32,11 +33,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-    "include": [
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "vite.config.ts",
-      "env.d.ts",
-      "vite-env.d.ts",
-    ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "vite.config.ts",
+    "env.d.ts",
+    "vite-env.d.ts",
+  ],
 }
