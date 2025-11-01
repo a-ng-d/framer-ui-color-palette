@@ -2,12 +2,13 @@ import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
+import { FontFamily, propertyFontFamily } from './styles'
 
 export default class Tag {
   private name: string
   private content: string
   private fontSize: number
-  private fontFamily: 'Martian Mono' | 'Lexend'
+  private fontFamily: FontFamily
   private url: string | null
   private backgroundColor: {
     rgb: RgbModel
@@ -24,7 +25,7 @@ export default class Tag {
     name,
     content,
     fontSize = 8,
-    fontFamily = 'Martian Mono',
+    fontFamily = propertyFontFamily,
     backgroundColor = {
       rgb: {
         r: 1,
@@ -38,7 +39,7 @@ export default class Tag {
     name: string
     content: string
     fontSize?: number
-    fontFamily?: 'Martian Mono' | 'Lexend'
+    fontFamily?: FontFamily
     backgroundColor?: {
       rgb: RgbModel
       alpha: number
@@ -74,8 +75,9 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
         width: '1px',
         color: '#0000000d',
@@ -109,8 +111,9 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
         color: '#0000000d',
         width: '1px',
@@ -159,8 +162,9 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
         color: '#0000000d',
         width: '1px',
@@ -207,7 +211,7 @@ export default class Tag {
 
     const nodeTextInstance = this.nodeText
 
-    if (nodeTextInstance) 
+    if (nodeTextInstance)
       nodeTextInstance.setAttributes({
         name: '_text',
         color: '#000000',
@@ -222,7 +226,6 @@ export default class Tag {
         alignment: 'center',
         link: this.url ? this.url : undefined,
       })
-    
 
     return this.nodeText
   }
