@@ -1,6 +1,11 @@
 import { TextNode, FrameNode, framer } from 'framer-plugin'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
-import { bodyFontFamily, darkColor, FontFamily } from './styles'
+import {
+  bodyFontFamily,
+  darkColor,
+  darkColorExtraDim,
+  FontFamily,
+} from './styles'
 
 export default class Paragraph {
   private name: string
@@ -90,10 +95,10 @@ export default class Paragraph {
       stackDirection: 'vertical',
       gap: '0px',
       padding: '8px',
-      backgroundColor: '#ffffff80',
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
       border: {
         width: '1px',
-        color: darkColor + '0d',
+        color: darkColorExtraDim,
         style: 'solid',
       },
       borderRadius: '16px',

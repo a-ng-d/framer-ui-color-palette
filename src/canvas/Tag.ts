@@ -2,7 +2,13 @@ import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
-import { darkColor, FontFamily, propertyFontFamily } from './styles'
+import {
+  darkColor,
+  darkColorDim,
+  darkColorExtraDim,
+  FontFamily,
+  propertyFontFamily,
+} from './styles'
 
 export default class Tag {
   private name: string
@@ -80,7 +86,7 @@ export default class Tag {
         .hex(),
       border: {
         width: '1px',
-        color: darkColor + '0d',
+        color: darkColorExtraDim,
         style: 'solid',
       },
       borderRadius: '16px',
@@ -115,7 +121,7 @@ export default class Tag {
         .alpha(this.backgroundColor.alpha)
         .hex(),
       border: {
-        color: darkColor + '0d',
+        color: darkColorExtraDim,
         width: '1px',
         style: 'solid',
       },
@@ -166,7 +172,7 @@ export default class Tag {
         .alpha(this.backgroundColor.alpha)
         .hex(),
       border: {
-        color: darkColor + '0d',
+        color: darkColorExtraDim,
         width: '1px',
         style: 'solid',
       },
@@ -239,7 +245,7 @@ export default class Tag {
       backgroundColor: chroma([rgb[0] * 255, rgb[1] * 255, rgb[2] * 255]).hex(),
       border: {
         width: '1px',
-        color: darkColor + '1a',
+        color: darkColorDim,
         style: 'solid',
       },
       borderRadius: '8px',
@@ -257,11 +263,11 @@ export default class Tag {
       borderRadius: '12px',
       border: {
         width: '1px',
-        color: darkColor + '1a',
+        color: darkColorDim,
         style: 'solid',
       },
       backgroundImage: image !== undefined ? image : undefined,
-      backgroundColor: image === undefined ? darkColor + '1a' : undefined,
+      backgroundColor: image === undefined ? darkColorDim : undefined,
     })
 
     return this.nodeAvatar
