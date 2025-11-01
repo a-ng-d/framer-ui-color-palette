@@ -27,6 +27,7 @@
     "update:ext": "git submodule update --remote --merge",
     "update:figmug": "npm i @a_ng_d/figmug-ui@latest @a_ng_d/figmug-utils@latest",
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
+    "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
