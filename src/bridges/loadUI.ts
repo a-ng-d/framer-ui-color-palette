@@ -23,6 +23,7 @@ import checkUserPreferences from './checks/checkUserPreferences'
 import checkUserLicense from './checks/checkUserLicense'
 import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
+import checkCredits from './checks/checkCredits'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 
 const loadUI = async () => {
@@ -75,6 +76,7 @@ const loadUI = async () => {
     // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
+      .then(() => checkCredits())
       .then(() => checkUserPreferences())
       .then(() => checkUserLicense())
   }, 1000)

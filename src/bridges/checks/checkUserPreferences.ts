@@ -1,5 +1,5 @@
-import { Language } from '../../types/translations'
-import { locales } from '../../content/locales'
+import { Language } from '@ui-lib/types/translations'
+import { locales } from '@ui-lib/content/locales'
 
 const checkUserPreferences = async () => {
   const isWCAGDisplayed = window.localStorage.getItem('is_wcag_displayed')

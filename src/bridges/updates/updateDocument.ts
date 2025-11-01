@@ -1,4 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
@@ -7,7 +8,6 @@ import {
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getJsonSize } from '../../utils/getSize'
-import { locales } from '../../content/locales'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
