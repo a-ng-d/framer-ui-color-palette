@@ -2,7 +2,7 @@ import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
-import { FontFamily, propertyFontFamily } from './styles'
+import { darkColor, FontFamily, propertyFontFamily } from './styles'
 
 export default class Tag {
   private name: string
@@ -80,7 +80,7 @@ export default class Tag {
         .hex(),
       border: {
         width: '1px',
-        color: '#0000000d',
+        color: darkColor + '0d',
         style: 'solid',
       },
       borderRadius: '16px',
@@ -115,7 +115,7 @@ export default class Tag {
         .alpha(this.backgroundColor.alpha)
         .hex(),
       border: {
-        color: '#0000000d',
+        color: darkColor + '0d',
         width: '1px',
         style: 'solid',
       },
@@ -166,7 +166,7 @@ export default class Tag {
         .alpha(this.backgroundColor.alpha)
         .hex(),
       border: {
-        color: '#0000000d',
+        color: darkColor + '0d',
         width: '1px',
         style: 'solid',
       },
@@ -214,7 +214,7 @@ export default class Tag {
     if (nodeTextInstance)
       nodeTextInstance.setAttributes({
         name: '_text',
-        color: '#000000',
+        color: darkColor,
         font: {
           family: this.fontFamily,
           weight: 500,
@@ -239,7 +239,7 @@ export default class Tag {
       backgroundColor: chroma([rgb[0] * 255, rgb[1] * 255, rgb[2] * 255]).hex(),
       border: {
         width: '1px',
-        color: '#0000001a',
+        color: darkColor + '1a',
         style: 'solid',
       },
       borderRadius: '8px',
@@ -255,8 +255,13 @@ export default class Tag {
       width: '24px',
       height: '24px',
       borderRadius: '12px',
+      border: {
+        width: '1px',
+        color: darkColor + '1a',
+        style: 'solid',
+      },
       backgroundImage: image !== undefined ? image : undefined,
-      backgroundColor: image === undefined ? '#000000' : undefined,
+      backgroundColor: image === undefined ? darkColor + '1a' : undefined,
     })
 
     return this.nodeAvatar

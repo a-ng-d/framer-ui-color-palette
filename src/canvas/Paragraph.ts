@@ -1,6 +1,6 @@
 import { TextNode, FrameNode, framer } from 'framer-plugin'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
-import { bodyFontFamily, FontFamily } from './styles'
+import { bodyFontFamily, darkColor, FontFamily } from './styles'
 
 export default class Paragraph {
   private name: string
@@ -65,7 +65,7 @@ export default class Paragraph {
     if (nodeTextInstance)
       nodeTextInstance.setAttributes({
         name: '_text',
-        color: '#000000',
+        color: darkColor,
         font: {
           family: this.fontFamily,
           weight: 500,
@@ -93,7 +93,7 @@ export default class Paragraph {
       backgroundColor: '#ffffff80',
       border: {
         width: '1px',
-        color: '#0000000d',
+        color: darkColor + '0d',
         style: 'solid',
       },
       borderRadius: '16px',

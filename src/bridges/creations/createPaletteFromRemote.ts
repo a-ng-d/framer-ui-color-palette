@@ -5,6 +5,7 @@ import {
   MetaConfiguration,
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import createDocument from './createDocument'
 
 interface Msg {
   data: {
@@ -57,6 +58,8 @@ const createPaletteFromRemote = async (msg: Msg) => {
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )
+
+  createDocument(palette.meta.id, 'PALETTE')
 
   return window.postMessage({
     type: 'LOAD_PALETTE',
