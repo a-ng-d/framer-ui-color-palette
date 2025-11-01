@@ -1,5 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '../content/locales'
+import { locales } from '@ui-lib/content/locales'
 import Tag from './Tag'
 
 export default class Status {

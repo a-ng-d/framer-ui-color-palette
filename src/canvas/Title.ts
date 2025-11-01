@@ -1,11 +1,11 @@
 import { FrameNode, framer } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Tag from './Tag'
 import Paragraph from './Paragraph'
 

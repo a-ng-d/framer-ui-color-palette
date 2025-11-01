@@ -1,5 +1,6 @@
 import { FrameNode, framer } from 'framer-plugin'
 import chroma from 'chroma-js'
+import { locales } from '@ui-lib/content/locales'
 import {
   Channel,
   Color,
@@ -9,7 +10,6 @@ import {
   TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Properties {

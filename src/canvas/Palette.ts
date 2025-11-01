@@ -1,4 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -6,7 +7,6 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Title from './Title'
 import Signature from './Signature'
 import Sample from './Sample'
