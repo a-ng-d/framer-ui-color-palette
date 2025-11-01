@@ -1,5 +1,6 @@
 import { framer } from 'framer-plugin'
 import { locales } from '@ui-lib/content/locales'
+import observeAttribute from '../utils/observeAttribute'
 import globalConfig from '../global.config'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
@@ -61,6 +62,15 @@ const loadUI = async () => {
         avatar: user.avatarUrl,
         accessToken: window.localStorage.getItem('supabase_access_token'),
         refreshToken: window.localStorage.getItem('supabase_refresh_token'),
+      },
+    })
+    window.postMessage({
+      type: 'SET_THEME',
+      data: {
+        theme:
+          document.body.dataset.framerTheme === 'light'
+            ? 'framer-light'
+            : 'framer-dark',
       },
     })
     window.postMessage({
@@ -272,7 +282,7 @@ const loadUI = async () => {
         window.postMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE'],
+            plans: ['ONE', 'ACTIVATE'],
           },
         }),
       GO_TO_ONE: async () => window.open(globalConfig.urls.storeUrl, '_blank'),
@@ -313,6 +323,10 @@ const loadUI = async () => {
 
   // Listeners
   framer.subscribeToSelection(() => processSelection())
+  observeAttribute('body', 'data-framer-theme', (value) => {
+    const theme = value === 'light' ? 'framer-light' : 'framer-dark'
+    window.postMessage({ type: 'SET_THEME', data: { theme } })
+  })
 }
 
 export default loadUI
