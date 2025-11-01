@@ -45,7 +45,6 @@ export default class Property {
 
     if (nodePropertyInstance && nodeTagInstance)
       framer.setParent(nodeTagInstance.id, nodePropertyInstance.id)
-    
 
     return this.node
   }

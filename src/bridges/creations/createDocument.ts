@@ -47,8 +47,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   if (!documentsInstance) throw new Error(locales.get().error.document)
 
   const children = await documentsInstance.getChildren()
-  framer
-    .setSelection(children.map((child) => child.id))
+  framer.setSelection(children.map((child) => child.id))
 
   setTimeout(() => framer.zoomIntoView(children.map((child) => child.id)), 1000)
 
