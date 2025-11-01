@@ -5,10 +5,6 @@ const addHours = (date: Date, hours: number) => {
 }
 
 const checkCredits = async () => {
-  const iframe = document.querySelector(
-    '#ui-container'
-  ) as HTMLIFrameElement | null
-
   const creditsCountStr = window.localStorage.getItem('credits_count')
   const renewDateStr = window.localStorage.getItem('credits_renew_date')
   const creditsVersion = window.localStorage.getItem('credits_version')
@@ -65,7 +61,7 @@ const checkCredits = async () => {
     renewDate = next
   }
 
-  iframe?.contentWindow?.postMessage({
+  window.postMessage({
     type: 'CHECK_CREDITS',
     data: {
       creditsCount: creditsCount,
