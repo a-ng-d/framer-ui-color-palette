@@ -1,23 +1,24 @@
-import { doSpecificMode } from "@ui-lib/stores/features";
-import { Config } from "./types/config";
-import { locales } from "./content/locales";
+import { Config } from '@ui-lib/types/config'
+import { doSpecificMode } from '@ui-lib/stores/features'
+import { locales } from '@ui-lib/content/locales'
 
-const isDev = import.meta.env.MODE === "development";
-declare const __APP_VERSION__: string;
+const isDev = import.meta.env.MODE === 'development'
+declare const __APP_VERSION__: string
 
 const globalConfig: Config = {
   limits: {
     pageSize: 20,
   },
   env: {
-    platform: 'figma',
-    editor: 'figma',
-    ui: 'figma-ui3',
-    colorMode: 'figma-dark',
+    platform: 'framer',
+    editor: 'framer',
+    ui: 'framer',
+    colorMode: 'framer-dark',
     isDev,
     isSupabaseEnabled: true,
     isMixpanelEnabled: false,
     isSentryEnabled: true,
+    isMistralAiEnabled: true,
     announcementsDbId: import.meta.env.VITE_NOTION_ANNOUNCEMENTS_ID as string,
     onboardingDbId: import.meta.env.VITE_NOTION_ONBOARDING_ID as string,
     pluginId: 'e4cdcc',
@@ -26,12 +27,16 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
+    creditsLimit: 400,
+    creditsRenewalPeriodDays: 1,
+    creditsRenewalPeriodHours: 24,
   },
   dbs: {
     palettesDbViewName: isDev
       ? 'sandbox_palettes_with_creators'
       : 'palettes_with_creators',
     palettesDbTableName: isDev ? 'sandbox_palettes' : 'palettes',
+    starredPalettesDbTableName: 'starred_palettes',
   },
   urls: {
     authWorkerUrl: isDev
@@ -45,6 +50,7 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (import.meta.env.VITE_AUTH_URL as string),
     storeApiUrl: import.meta.env.VITE_LEMONSQUEEZY_URL as string,
+    aiApiUrl: import.meta.env.VITE_MISTRAL_AI_API_URL as string,
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:5173'
@@ -77,6 +83,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: __APP_VERSION__,
+    creditsVersion: '2025.10',
   },
   features: doSpecificMode(
     [
@@ -93,13 +100,14 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_STYLES',
       'PREVIEW_LOCK_SOURCE_COLORS',
       'SOURCE',
-      'PRESETS_MATERIAL_3',
-      'PRESETS_TAILWIND',
-      'PRESETS_ADS',
-      'PRESETS_ADS_NEUTRAL',
-      'PRESETS_CARBON',
-      'PRESETS_BASE',
-      'PRESETS_POLARIS',
+      'SOURCE_COOLORS_ADD',
+      'SOURCE_REALTIME_COLORS_ADD',
+      'SOURCE_EXPLORE_ADD',
+      'SOURCE_AI_REQUEST',
+      'SOURCE_IMAGE_UPLOAD',
+      'SOURCE_HARMONY_BASE',
+      'SOURCE_HARMONY_ADD',
+      'SOURCE_EXPLORE_ADD',
       'PRESETS_CUSTOM_ADD',
       'SCALE_CHROMA',
       'THEMES',
@@ -120,9 +128,32 @@ const globalConfig: Config = {
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOMALY',
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOPSIA',
     ],
-    ['SCALE_CONTRAST_RATIO', 'INVOLVE_COMMUNITY']
+    [
+      'SOURCE_AI',
+      'SOURCE_IMAGE',
+      'SOURCE_HARMONY',
+      'PRESETS_SPECTRUM',
+      'PRESETS_SPECTRUM_NEUTRAL',
+      'PRESETS_BOOTSTRAP',
+      'PRESETS_RADIX',
+      'PRESETS_UNTITLED_UI',
+      'PRESETS_OPEN_COLOR',
+      'PRESETS_FLUENT',
+      'REMOTE_PALETTES_STARRED',
+      'REMOTE_PALETTES_ORG',
+      'INVOLVE_COMMUNITY',
+    ]
   ),
   locales: locales.get(),
+  lang: 'en-US',
+  fees: {
+    colourLoversImport: 25,
+    coolorsImport: 25,
+    realtimeColorsImport: 25,
+    imageColorsExtract: 100,
+    harmonyCreate: 50,
+    aiColorsGenerate: 100,
+  },
 }
 
-export default globalConfig;
+export default globalConfig
