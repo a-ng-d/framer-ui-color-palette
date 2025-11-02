@@ -285,7 +285,13 @@ const loadUI = async () => {
             plans: ['ONE', 'ACTIVATE'],
           },
         }),
-      GO_TO_ONE: async () => window.open(globalConfig.urls.storeUrl, '_blank'),
+      GO_TO_ONE: async () =>
+        window.open(
+          path.data.context === 'REGULAR'
+            ? globalConfig.urls.storeUrl
+            : globalConfig.urls.storeWithDiscountUrl,
+          '_blank'
+        ),
       ENABLE_PRO_PLAN: async () =>
         window.postMessage({
           type: 'ENABLE_PRO_PLAN',

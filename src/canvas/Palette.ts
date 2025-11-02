@@ -245,7 +245,7 @@ export default class Palette {
     // Base
     this.node = framer.createFrameNode({
       name: `_colors${locales.get().separator}do not edit any layer`,
-      locked: false,
+      locked: true,
       layout: 'stack',
       width: 'fit-content',
       height: 'fit-content',

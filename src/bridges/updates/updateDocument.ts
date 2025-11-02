@@ -7,6 +7,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import setPaletteName from '../../utils/setPaletteName'
 import { getJsonSize } from '../../utils/getSize'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
@@ -80,6 +81,16 @@ const updateDocument = async (view: ViewConfiguration) => {
         }).makeNode()
 
   if (!newDocument) return null
+
+  document.setAttributes({
+    name: setPaletteName(
+      palette.base.name,
+      currentTheme.name,
+      palette.base.preset.name,
+      palette.base.colorSpace,
+      currentTheme.visionSimulationMode
+    ),
+  })
 
   framer.setParent(newDocument.id, document.id)
   framer.setSelection(document.id)
