@@ -1,6 +1,7 @@
 import { framer } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
+import observeAttribute from '../utils/observeAttribute'
 import globalConfig from '../global.config'
-import { locales } from '../content/locales'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
@@ -23,6 +24,7 @@ import checkUserPreferences from './checks/checkUserPreferences'
 import checkUserLicense from './checks/checkUserLicense'
 import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
+import checkCredits from './checks/checkCredits'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 
 const loadUI = async () => {
@@ -63,6 +65,15 @@ const loadUI = async () => {
       },
     })
     window.postMessage({
+      type: 'SET_THEME',
+      data: {
+        theme:
+          document.body.dataset.framerTheme === 'light'
+            ? 'framer-light'
+            : 'framer-dark',
+      },
+    })
+    window.postMessage({
       type: 'CHECK_ANNOUNCEMENTS_VERSION',
     })
     window.postMessage({
@@ -75,6 +86,7 @@ const loadUI = async () => {
     // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
+      .then(() => checkCredits())
       .then(() => checkUserPreferences())
       .then(() => checkUserLicense())
   }, 1000)
@@ -270,10 +282,16 @@ const loadUI = async () => {
         window.postMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE'],
+            plans: ['ONE', 'ACTIVATE'],
           },
         }),
-      GO_TO_ONE: async () => window.open(globalConfig.urls.storeUrl, '_blank'),
+      GO_TO_ONE: async () =>
+        window.open(
+          path.data.context === 'REGULAR'
+            ? globalConfig.urls.storeUrl
+            : globalConfig.urls.storeWithDiscountUrl,
+          '_blank'
+        ),
       ENABLE_PRO_PLAN: async () =>
         window.postMessage({
           type: 'ENABLE_PRO_PLAN',
@@ -311,6 +329,10 @@ const loadUI = async () => {
 
   // Listeners
   framer.subscribeToSelection(() => processSelection())
+  observeAttribute('body', 'data-framer-theme', (value) => {
+    const theme = value === 'light' ? 'framer-light' : 'framer-dark'
+    window.postMessage({ type: 'SET_THEME', data: { theme } })
+  })
 }
 
 export default loadUI

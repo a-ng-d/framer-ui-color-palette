@@ -1,4 +1,5 @@
 import { uid } from 'uid'
+import { locales } from '@ui-lib/content/locales'
 import {
   ColorConfiguration,
   Data,
@@ -6,7 +7,7 @@ import {
   SourceColorConfiguration,
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
+import createDocument from './createDocument'
 
 interface Msg {
   data: {
@@ -95,6 +96,8 @@ const createPalette = async (msg: Msg) => {
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )
+
+  createDocument(palette.meta.id, 'PALETTE')
 
   return window.postMessage({
     type: 'LOAD_PALETTE',

@@ -2,12 +2,19 @@ import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
+import {
+  darkColor,
+  darkColorDim,
+  darkColorExtraDim,
+  FontFamily,
+  propertyFontFamily,
+} from './styles'
 
 export default class Tag {
   private name: string
   private content: string
   private fontSize: number
-  private fontFamily: 'Martian Mono' | 'Lexend'
+  private fontFamily: FontFamily
   private url: string | null
   private backgroundColor: {
     rgb: RgbModel
@@ -24,7 +31,7 @@ export default class Tag {
     name,
     content,
     fontSize = 8,
-    fontFamily = 'Martian Mono',
+    fontFamily = propertyFontFamily,
     backgroundColor = {
       rgb: {
         r: 1,
@@ -38,7 +45,7 @@ export default class Tag {
     name: string
     content: string
     fontSize?: number
-    fontFamily?: 'Martian Mono' | 'Lexend'
+    fontFamily?: FontFamily
     backgroundColor?: {
       rgb: RgbModel
       alpha: number
@@ -74,11 +81,12 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
         width: '1px',
-        color: '#0000000d',
+        color: darkColorExtraDim,
         style: 'solid',
       },
       borderRadius: '16px',
@@ -109,10 +117,11 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
-        color: '#0000000d',
+        color: darkColorExtraDim,
         width: '1px',
         style: 'solid',
       },
@@ -159,10 +168,11 @@ export default class Tag {
         this.backgroundColor.rgb.r * 255,
         this.backgroundColor.rgb.g * 255,
         this.backgroundColor.rgb.b * 255,
-        this.backgroundColor.alpha,
-      ]).hex(),
+      ])
+        .alpha(this.backgroundColor.alpha)
+        .hex(),
       border: {
-        color: '#0000000d',
+        color: darkColorExtraDim,
         width: '1px',
         style: 'solid',
       },
@@ -207,10 +217,10 @@ export default class Tag {
 
     const nodeTextInstance = this.nodeText
 
-    if (nodeTextInstance) 
+    if (nodeTextInstance)
       nodeTextInstance.setAttributes({
         name: '_text',
-        color: '#000000',
+        color: darkColor,
         font: {
           family: this.fontFamily,
           weight: 500,
@@ -222,7 +232,6 @@ export default class Tag {
         alignment: 'center',
         link: this.url ? this.url : undefined,
       })
-    
 
     return this.nodeText
   }
@@ -236,7 +245,7 @@ export default class Tag {
       backgroundColor: chroma([rgb[0] * 255, rgb[1] * 255, rgb[2] * 255]).hex(),
       border: {
         width: '1px',
-        color: '#0000001a',
+        color: darkColorDim,
         style: 'solid',
       },
       borderRadius: '8px',
@@ -252,8 +261,13 @@ export default class Tag {
       width: '24px',
       height: '24px',
       borderRadius: '12px',
+      border: {
+        width: '1px',
+        color: darkColorDim,
+        style: 'solid',
+      },
       backgroundImage: image !== undefined ? image : undefined,
-      backgroundColor: image === undefined ? '#000000' : undefined,
+      backgroundColor: image === undefined ? darkColorDim : undefined,
     })
 
     return this.nodeAvatar

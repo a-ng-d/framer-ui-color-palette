@@ -1,7 +1,7 @@
 import { FrameNode, framer } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../gets/processSelection'
-import { locales } from '../../content/locales'
 
 const createPaletteFromDocument = async () => {
   const document = (await framer.getSelection())[0] as FrameNode

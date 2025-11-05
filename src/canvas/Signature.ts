@@ -1,6 +1,6 @@
 import { FrameNode, framer, SVGNode } from 'framer-plugin'
+import { locales } from '@ui-lib/content/locales'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
-import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Signature {

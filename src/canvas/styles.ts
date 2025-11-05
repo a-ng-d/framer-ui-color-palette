@@ -1,0 +1,6 @@
+export const darkColor = 'rgba(0, 33, 43, 1)'
+export const darkColorDim = 'rgba(0, 33, 43, 0.1)'
+export const darkColorExtraDim = 'rgba(0, 33, 43, 0.05)'
+export const propertyFontFamily = 'Martian Mono'
+export const bodyFontFamily = 'Lexend'
+export type FontFamily = 'Martian Mono' | 'Lexend'

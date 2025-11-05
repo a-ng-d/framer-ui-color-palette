@@ -8,11 +8,11 @@ import {
   isFrameNode,
 } from 'framer-plugin'
 import chroma from 'chroma-js'
+import { locales } from '@ui-lib/content/locales'
 import {
   HexModel,
   SourceColorConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
 
 export let currentSelection: Array<CanvasNode> = []
 export let previousSelection: Array<CanvasNode> = []
