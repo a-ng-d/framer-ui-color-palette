@@ -46,8 +46,8 @@ const loadUI = async () => {
     height: windowSize.height,
     position: 'top right',
     resizable: true,
-    minWidth: 640,
-    minHeight: 420,
+    minWidth: 400,
+    minHeight: 400,
   })
 
   // UI > Canvas
