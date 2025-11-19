@@ -1,5 +1,6 @@
 import { Language } from '@ui-lib/types/translations'
 import { locales } from '@ui-lib/content/locales'
+import globalConfig from '../../global.config'
 
 const checkUserPreferences = async () => {
   const isWCAGDisplayed = window.localStorage.getItem('is_wcag_displayed')
@@ -29,9 +30,9 @@ const checkUserPreferences = async () => {
     window.localStorage.setItem('is_vscode_message_displayed', 'true')
 
   if (userLanguage === null)
-    window.localStorage.setItem('user_language', 'en-US')
+    window.localStorage.setItem('user_language', globalConfig.lang)
 
-  locales.set((userLanguage as Language) ?? 'en-US')
+  locales.set((userLanguage as Language) ?? globalConfig.lang)
 
   return window.postMessage(
     {
@@ -51,7 +52,7 @@ const checkUserPreferences = async () => {
           isVsCodeMessageDisplayed === null
             ? true
             : isVsCodeMessageDisplayed === 'true',
-        userLanguage: userLanguage ?? 'en-US',
+        userLanguage: userLanguage ?? globalConfig.lang,
       },
     },
     '*'
