@@ -47,17 +47,18 @@ jobs:
           echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
           cat .env.sentry-build-plugin
 
-      - name: Install and Build
+      - name: Install and Pack
         run: |
           npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
           npm install
-          npm run build
+          npm run pack
+          mv plugin.zip framer-ui-color-palette.zip
 
       - name: Archive production artifact
         uses: actions/upload-artifact@v4
         with:
           name: framer-ui-color-palette
-          path: dist/
+          path: framer-ui-color-palette.zip
           retention-days: 5
         
   create-release:
@@ -77,7 +78,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: framer-ui-color-palette
-        path: dist/
+        path: ./
 
     - name: Extract package version
       id: extract_version
@@ -109,6 +110,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/framer-ui-color-palette.zip
+        asset_path: framer-ui-color-palette.zip
         asset_name: framer-ui-color-palette.zip
         asset_content_type: application/zip
