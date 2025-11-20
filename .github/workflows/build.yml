@@ -39,16 +39,15 @@ jobs:
         echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
         cat .env.sentry-build-plugin
 
-    - name: Install and Pack
+    - name: Install and Build
       run: |
         npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
         npm install
-        npm run pack
-        mv plugin.zip framer-ui-color-palette.zip
+        npm run build
 
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
         name: framer-ui-color-palette
-        path: framer-ui-color-palette.zip
+        path: dist/
         retention-days: 5
