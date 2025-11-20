@@ -46,50 +46,9 @@ const loadUI = async () => {
     height: windowSize.height,
     position: 'top right',
     resizable: true,
-    minWidth: 640,
-    minHeight: 420,
+    minWidth: 400,
+    minHeight: 400,
   })
-
-  setTimeout(async () => {
-    const user = await framer.getCurrentUser()
-
-    // Canvas > UI
-    window.postMessage({
-      type: 'CHECK_USER_AUTHENTICATION',
-      data: {
-        id: user.id,
-        fullName: user.name,
-        avatar: user.avatarUrl,
-        accessToken: window.localStorage.getItem('supabase_access_token'),
-        refreshToken: window.localStorage.getItem('supabase_refresh_token'),
-      },
-    })
-    window.postMessage({
-      type: 'SET_THEME',
-      data: {
-        theme:
-          document.body.dataset.framerTheme === 'light'
-            ? 'framer-light'
-            : 'framer-dark',
-      },
-    })
-    window.postMessage({
-      type: 'CHECK_ANNOUNCEMENTS_VERSION',
-    })
-    window.postMessage({
-      type: 'CHECK_EDITOR',
-      data: {
-        editor: globalConfig.env.editor,
-      },
-    })
-
-    // Checks
-    checkUserConsent()
-      .then(() => checkTrialStatus())
-      .then(() => checkCredits())
-      .then(() => checkUserPreferences())
-      .then(() => checkUserLicense())
-  }, 1000)
 
   // UI > Canvas
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -97,6 +56,44 @@ const loadUI = async () => {
     const path = msg.detail.message.pluginMessage
 
     const actions: { [action: string]: () => void } = {
+      LOAD_DATA: async () => {
+        const user = await framer.getCurrentUser()
+
+        window.postMessage({
+          type: 'CHECK_USER_AUTHENTICATION',
+          data: {
+            id: user.id,
+            fullName: user.name,
+            avatar: user.avatarUrl,
+            accessToken: window.localStorage.getItem('supabase_access_token'),
+            refreshToken: window.localStorage.getItem('supabase_refresh_token'),
+          },
+        })
+        window.postMessage({
+          type: 'SET_THEME',
+          data: {
+            theme:
+              document.body.dataset.framerTheme === 'light'
+                ? 'framer-light'
+                : 'framer-dark',
+          },
+        })
+        window.postMessage({
+          type: 'CHECK_ANNOUNCEMENTS_VERSION',
+        })
+        window.postMessage({
+          type: 'CHECK_EDITOR',
+          data: {
+            editor: globalConfig.env.editor,
+          },
+        })
+
+        checkUserConsent()
+          .then(() => checkTrialStatus())
+          .then(() => checkCredits())
+          .then(() => checkUserPreferences())
+          .then(() => checkUserLicense())
+      },
       CHECK_USER_CONSENT: () => checkUserConsent(),
       CHECK_ANNOUNCEMENTS_STATUS: () =>
         checkAnnouncementsStatus(path.data.version),

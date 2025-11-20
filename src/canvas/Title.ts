@@ -231,12 +231,14 @@ export default class Title {
 
     const nodeUpdateInstance = await new Tag({
       name: '_updated_at',
-      content: locales
-        .get()
-        .paletteProperties.updatedAt.replace(
-          '{date}',
-          new Date(this.meta.dates.updatedAt).toDateString()
-        ),
+      content: locales.get().paletteProperties.updatedAt.replace(
+        '{date}',
+        new Date(this.meta.dates.updatedAt).toLocaleDateString(locales.lang(), {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      ),
       fontSize: 12,
     }).makeNodeTag()
 

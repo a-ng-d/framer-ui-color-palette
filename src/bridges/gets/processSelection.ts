@@ -13,6 +13,7 @@ import {
   HexModel,
   SourceColorConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { imageUrlToArrayBuffer } from '../../utils/imageUrlToArrayBuffer'
 
 export let currentSelection: Array<CanvasNode> = []
 export let previousSelection: Array<CanvasNode> = []
@@ -29,7 +30,8 @@ const processSelection = async () => {
 
   const document = selection[0] as FrameNode
 
-  const selectionHandler = async (state: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const selectionHandler = async (state: string, data?: any) => {
     const actions: { [key: string]: () => Promise<void> } = {
       DOCUMENT_SELECTED: async () => {
         const view = await document.getPluginData('view')
@@ -59,6 +61,23 @@ const processSelection = async () => {
             selection: viableSelection,
           },
         })
+      },
+      IMAGE_SELECTED: async () => {
+        try {
+          const imageUrl = data.element.backgroundImage?.url
+          if (imageUrl) {
+            const arrayBuffer = await imageUrlToArrayBuffer(imageUrl)
+            window.postMessage({
+              type: 'GET_IMAGE_HASH',
+              data: {
+                arrayBuffer: arrayBuffer,
+                imageTitle: data.element.name,
+              },
+            })
+          }
+        } catch (error) {
+          console.error('Error processing image:', error)
+        }
       },
     }
 
@@ -93,6 +112,8 @@ const processSelection = async () => {
 
   selection.forEach(async (element: CanvasNode) => {
     const hasColor = (element as FrameNode).backgroundColor !== null
+    const hasImage = (element as FrameNode).backgroundImage !== null
+
     if (isFrameNode(element))
       if (hasColor && (await element.getPluginDataKeys()).length === 0) {
         const hexToGl = chroma(element.backgroundColor as HexModel).gl()
@@ -117,6 +138,8 @@ const processSelection = async () => {
         })
         await selectionHandler('COLOR_SELECTED')
       }
+
+    if (hasImage) await selectionHandler('IMAGE_SELECTED', { element })
   })
 
   setTimeout(() => (isSelectionChanged = false), 1000)
