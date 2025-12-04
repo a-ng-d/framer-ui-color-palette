@@ -85,7 +85,7 @@ const updateDocument = async (view: ViewConfiguration) => {
   document.setAttributes({
     name: setPaletteName(
       palette.base.name,
-      currentTheme.name,
+      currentTheme.type === 'default theme' ? undefined : currentTheme.name,
       palette.base.preset.name,
       palette.base.colorSpace,
       currentTheme.visionSimulationMode
