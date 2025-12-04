@@ -1,5 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
+import { tolgee } from '../ui'
 import Tag from './Tag'
 
 export default class Status {
@@ -44,7 +44,8 @@ export default class Status {
       stackDirection: 'horizontal',
       stackDistribution: 'start',
       stackAlignment: 'start',
-      gap: '0px',
+      stackWrapEnabled: true,
+      gap: '4px',
       padding: '0px',
       backgroundColor: null,
     })
@@ -56,7 +57,7 @@ export default class Status {
     if (this.status.isClosestToRef && !this.status.isTransparent) {
       const nodeTagInstance = await new Tag({
         name: '_close',
-        content: locales.get().paletteProperties.closest,
+        content: tolgee.t('paletteProperties.closest'),
         fontSize: 10,
       }).makeNodeTag()
 
@@ -67,7 +68,7 @@ export default class Status {
     if (this.status.isLocked && !this.status.isClosestToRef) {
       const nodeTagLockInstance = await new Tag({
         name: '_lock',
-        content: locales.get().paletteProperties.locked,
+        content: tolgee.t('paletteProperties.locked'),
         fontSize: 10,
       }).makeNodeTag()
 

@@ -1,6 +1,6 @@
 import { FrameNode, framer, SVGNode } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
+import { tolgee } from '../ui'
 import Tag from './Tag'
 
 export default class Signature {
@@ -34,12 +34,12 @@ export default class Signature {
     const nodeInfoInstance = await this.nodeInfo
     const nodeTaglineInstance = await new Tag({
       name: '_tagline',
-      content: locales.get().tagline,
+      content: tolgee.t('tagline'),
       fontSize: 10,
     }).makeNodeTag()
     const nodeUrlInstance = await new Tag({
       name: '_url',
-      content: locales.get().url,
+      content: tolgee.t('url'),
       fontFamily: 'Lexend',
     }).makeNodeTag()
 

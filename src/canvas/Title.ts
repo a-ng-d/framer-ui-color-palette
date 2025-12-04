@@ -1,11 +1,11 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../ui'
 import Tag from './Tag'
 import Paragraph from './Paragraph'
 
@@ -59,7 +59,7 @@ export default class Title {
     const nodeGlobalInfoInstance = await this.nodeGlobalInfo
     const nodeNameInstance = await new Tag({
       name: '_name',
-      content: this.base.name === '' ? locales.get().name : this.base.name,
+      content: this.base.name === '' ? tolgee.t('name') : this.base.name,
       fontSize: 20,
     }).makeNodeTag()
 
@@ -115,12 +115,9 @@ export default class Title {
     if (this.theme.description !== '') {
       const nodeThemeDescriptionInstance = await new Paragraph({
         name: '_theme-description',
-        content: locales
-          .get()
-          .paletteProperties.themeDescription.replace(
-            '{description}',
-            this.theme.description
-          ),
+        content: tolgee.t('paletteProperties.themeDescription', {
+          description: this.theme.description,
+        }),
         type: 'FIXED',
         width: 644,
         fontSize: 12,
@@ -168,12 +165,9 @@ export default class Title {
         .then(async (image) => {
           const nodeProviderInstance = await new Tag({
             name: '_provider',
-            content: locales
-              .get()
-              .paletteProperties.provider.replace(
-                '{name}',
-                this.meta.creatorIdentity.creatorFullName
-              ),
+            content: tolgee.t('paletteProperties.provider', {
+              name: this.meta.creatorIdentity.creatorFullName,
+            }),
             fontSize: 12,
           }).makeNodeTagWithAvatar(image)
 
@@ -183,9 +177,7 @@ export default class Title {
     if (this.data.type !== 'default theme') {
       const nodeThemeInstance = await new Tag({
         name: '_theme',
-        content: locales
-          .get()
-          .paletteProperties.theme.replace('{name}', this.data.name),
+        content: tolgee.t('paletteProperties.theme', { name: this.data.name }),
         fontSize: 12,
       }).makeNodeTag()
 
@@ -194,16 +186,16 @@ export default class Title {
     }
     const nodePresetInstance = await new Tag({
       name: '_preset',
-      content: locales
-        .get()
-        .paletteProperties.preset.replace('{name}', this.base.preset.name),
+      content: tolgee.t('paletteProperties.preset', {
+        name: this.base.preset.name,
+      }),
       fontSize: 12,
     }).makeNodeTag()
     const nodeColorSpaceInstance = await new Tag({
       name: '_color-space',
-      content: locales
-        .get()
-        .paletteProperties.colorSpace.replace('{name}', this.base.colorSpace),
+      content: tolgee.t('paletteProperties.colorSpace', {
+        name: this.base.colorSpace,
+      }),
       fontSize: 12,
     }).makeNodeTag()
 
@@ -215,13 +207,11 @@ export default class Title {
     if (this.base.visionSimulationMode !== 'NONE') {
       const nodeVisionSimulation = await new Tag({
         name: '_vision-simulation',
-        content: locales
-          .get()
-          .paletteProperties.visionSimulation.replace(
-            '{mode}',
+        content: tolgee.t('paletteProperties.visionSimulation', {
+          mode:
             this.theme.visionSimulationMode.charAt(0) +
-              this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
-          ),
+            this.theme.visionSimulationMode.toLocaleLowerCase().slice(1),
+        }),
         fontSize: 12,
       }).makeNodeTag()
 
@@ -231,14 +221,16 @@ export default class Title {
 
     const nodeUpdateInstance = await new Tag({
       name: '_updated_at',
-      content: locales.get().paletteProperties.updatedAt.replace(
-        '{date}',
-        new Date(this.meta.dates.updatedAt).toLocaleDateString(locales.lang(), {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      ),
+      content: tolgee.t('paletteProperties.updatedAt', {
+        date: new Date(this.meta.dates.updatedAt).toLocaleDateString(
+          tolgee.getLanguage(),
+          {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }
+        ),
+      }),
       fontSize: 12,
     }).makeNodeTag()
 

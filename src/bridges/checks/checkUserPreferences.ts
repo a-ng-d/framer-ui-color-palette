@@ -1,5 +1,4 @@
-import { Language } from '@ui-lib/types/translations'
-import { locales } from '@ui-lib/content/locales'
+import { tolgee } from '../../ui'
 import globalConfig from '../../global.config'
 
 const checkUserPreferences = async () => {
@@ -32,7 +31,7 @@ const checkUserPreferences = async () => {
   if (userLanguage === null)
     window.localStorage.setItem('user_language', globalConfig.lang)
 
-  locales.set((userLanguage as Language) ?? globalConfig.lang)
+  tolgee.changeLanguage(userLanguage ?? globalConfig.lang)
 
   return window.postMessage(
     {

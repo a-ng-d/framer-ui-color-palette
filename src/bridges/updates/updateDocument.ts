@@ -1,5 +1,4 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
@@ -9,6 +8,7 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import setPaletteName from '../../utils/setPaletteName'
 import { getJsonSize } from '../../utils/getSize'
+import { tolgee } from '../../ui'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
@@ -19,7 +19,7 @@ const updateDocument = async (view: ViewConfiguration) => {
 
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
-  if (rawPalette === null) throw new Error(locales.get().error.unfoundPalette)
+  if (rawPalette === null) throw new Error(tolgee.t('error.unfoundPalette'))
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
@@ -31,7 +31,7 @@ const updateDocument = async (view: ViewConfiguration) => {
   )
 
   if (themeData === undefined || currentTheme === undefined)
-    throw new Error(locales.get().error.document)
+    throw new Error(tolgee.t('error.document'))
 
   const isAllowedToCreateFrame = framer.isAllowedTo('createFrameNode')
   const isAllowedToCreateText = framer.isAllowedTo('addText')
@@ -54,7 +54,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     !isAllowedToSetAttributes ||
     !isAllowedToRemoveChildren
   )
-    throw new Error(locales.get().error.document)
+    throw new Error(tolgee.t('error.document'))
 
   const children = await document.getChildren()
 

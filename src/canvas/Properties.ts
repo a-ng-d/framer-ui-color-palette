@@ -1,6 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
 import chroma from 'chroma-js'
-import { locales } from '@ui-lib/content/locales'
 import {
   Channel,
   Color,
@@ -10,6 +9,7 @@ import {
   TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../ui'
 import Tag from './Tag'
 
 export default class Properties {
@@ -117,21 +117,20 @@ export default class Properties {
       | 'CONTENT_TEXT'
       | 'FLUENT_TEXT'
   ) => {
-    if (recommendedUsage === 'AVOID')
-      return locales.get().paletteProperties.avoid
+    if (recommendedUsage === 'AVOID') return tolgee.t('paletteProperties.avoid')
     else if (recommendedUsage === 'NON_TEXT')
-      return locales.get().paletteProperties.nonText
+      return tolgee.t('paletteProperties.nonText')
     else if (recommendedUsage === 'SPOT_TEXT')
-      return locales.get().paletteProperties.spotText
+      return tolgee.t('paletteProperties.spotText')
     else if (recommendedUsage === 'HEADLINES')
-      return locales.get().paletteProperties.headlines
+      return tolgee.t('paletteProperties.headlines')
     else if (recommendedUsage === 'BODY_TEXT')
-      return locales.get().paletteProperties.bodyText
+      return tolgee.t('paletteProperties.bodyText')
     else if (recommendedUsage === 'CONTENT_TEXT')
-      return locales.get().paletteProperties.contentText
+      return tolgee.t('paletteProperties.contentText')
     else if (recommendedUsage === 'FLUENT_TEXT')
-      return locales.get().paletteProperties.fluentText
-    return locales.get().paletteProperties.unknown
+      return tolgee.t('paletteProperties.fluentText')
+    return tolgee.t('paletteProperties.unknown')
   }
 
   makeNodeTopProps = async () => {
@@ -432,7 +431,7 @@ export default class Properties {
     const nodeDetailedBasePropsInstance = await this.nodeDetailedBaseProps
     const nodeTitleInstance = await new Tag({
       name: '_title',
-      content: locales.get().paletteProperties.base,
+      content: tolgee.t('paletteProperties.base'),
       fontSize: 10,
     }).makeNodeTag()
     const nodeHexPropInstance = await new Tag({
@@ -534,7 +533,7 @@ export default class Properties {
       await this.nodeDetailedWCAGScoresProps
     const nodeTitleInstance = await new Tag({
       name: '_title',
-      content: locales.get().paletteProperties.wcag,
+      content: tolgee.t('paletteProperties.wcag'),
       fontSize: 10,
     }).makeNodeTag()
 
@@ -628,7 +627,7 @@ export default class Properties {
       await this.nodeDetailedAPCAScoresProps
     const nodeTitleInstance = await new Tag({
       name: '_title',
-      content: locales.get().paletteProperties.apca,
+      content: tolgee.t('paletteProperties.apca'),
       fontSize: 10,
     }).makeNodeTag()
 
@@ -693,7 +692,7 @@ export default class Properties {
         nodeAPCALightProp,
         await new Tag({
           name: '_minimum-font-sizes',
-          content: locales.get().paletteProperties.fontSize,
+          content: tolgee.t('paletteProperties.fontSize'),
         }).makeNodeTag(),
         await new Tag({
           name: '_200-light',
@@ -724,7 +723,7 @@ export default class Properties {
         nodeAPCADarkProp,
         await new Tag({
           name: '_minimum-font-sizes',
-          content: locales.get().paletteProperties.fontSize,
+          content: tolgee.t('paletteProperties.fontSize'),
         }).makeNodeTag(),
         await new Tag({
           name: '_200-dark',

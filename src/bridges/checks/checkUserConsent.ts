@@ -1,7 +1,7 @@
-import { userConsent } from '../../utils/userConsent'
+import { ConsentConfiguration } from '@a_ng_d/figmug-ui'
 import globalConfig from '../../global.config'
 
-const checkUserConsent = async () => {
+const checkUserConsent = async (userConsent: Array<ConsentConfiguration>) => {
   const currentUserConsentVersion = window.localStorage.getItem(
     'user_consent_version'
   )

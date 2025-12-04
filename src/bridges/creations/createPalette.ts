@@ -1,5 +1,4 @@
 import { uid } from 'uid'
-import { locales } from '@ui-lib/content/locales'
 import {
   ColorConfiguration,
   Data,
@@ -7,6 +6,7 @@ import {
   SourceColorConfiguration,
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../ui'
 import createDocument from './createDocument'
 
 interface Msg {
@@ -46,7 +46,7 @@ const createPalette = async (msg: Msg) => {
 
   const themes: Array<ThemeConfiguration> = [
     {
-      name: locales.get().themes.switchTheme.defaultTheme,
+      name: tolgee.t('themes.switchTheme.defaultTheme'),
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',
