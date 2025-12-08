@@ -85,7 +85,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: __APP_VERSION__,
-    creditsVersion: '2025.10',
+    creditsVersion: '2025.12',
   },
   features: doSpecificMode(
     [
