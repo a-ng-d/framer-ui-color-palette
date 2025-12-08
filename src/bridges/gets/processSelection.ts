@@ -8,12 +8,12 @@ import {
   isFrameNode,
 } from 'framer-plugin'
 import chroma from 'chroma-js'
-import { locales } from '@ui-lib/content/locales'
 import {
   HexModel,
   SourceColorConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { imageUrlToArrayBuffer } from '../../utils/imageUrlToArrayBuffer'
+import { tolgee } from '../../ui'
 
 export let currentSelection: Array<CanvasNode> = []
 export let previousSelection: Array<CanvasNode> = []
@@ -118,7 +118,7 @@ const processSelection = async () => {
       if (hasColor && (await element.getPluginDataKeys()).length === 0) {
         const hexToGl = chroma(element.backgroundColor as HexModel).gl()
         viableSelection.push({
-          name: element.name || locales.get().colors.defaultName,
+          name: element.name || tolgee.t('colors.defaultName'),
           rgb: {
             r: hexToGl[0],
             g: hexToGl[1],

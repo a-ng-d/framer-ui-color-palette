@@ -10,11 +10,17 @@ import {
 import { initSentry } from '@ui-lib/external/monitoring'
 import { initMistral } from '@ui-lib/external/mistral'
 import { initSupabase } from '@ui-lib/external/auth'
+import zh_Hans_CN from '@ui-lib/content/translations/zh-Hans-CN.json'
+import pt_BR from '@ui-lib/content/translations/pt-BR.json'
+import fr_FR from '@ui-lib/content/translations/fr-FR.json'
+import en_US from '@ui-lib/content/translations/en-US.json'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
+import { TolgeeProvider } from '@tolgee/react'
 import * as Sentry from '@sentry/react'
 import globalConfig from '../global.config'
 import loadUI from '../bridges/loadUI'
+import { initTolgee } from '../../packages/ui-ui-color-palette/src/external/translation'
 
 loadUI()
 
@@ -28,6 +34,8 @@ const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
 const mistralApiKey = import.meta.env.VITE_MISTRAL_AI_API_KEY
+const tolgeeUrl = import.meta.env.VITE_TOLGEE_URL
+const tolgeeApiKey = import.meta.env.VITE_TOLGEE_API_KEY
 
 // Mixpanel
 if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
@@ -78,7 +86,7 @@ if (
     maxValueLength: 5000,
     maxBreadcrumbs: 150,
     tracesSampleRate: 1.0,
-    replaysSessionSampleRate: 0.5,
+    replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 1.0,
     release: globalConfig.versions.pluginVersion,
   })
@@ -109,6 +117,14 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
 // Mistral AI
 if (globalConfig.env.isMistralAiEnabled) initMistral(mistralApiKey)
 
+// Tolgee
+export const tolgee = initTolgee(tolgeeUrl, tolgeeApiKey, globalConfig.lang, {
+  'en-US': en_US,
+  'fr-FR': fr_FR,
+  'pt-BR': pt_BR,
+  'zh-Hans-CN': zh_Hans_CN,
+})
+
 // Bridge Canvas <> UI
 window.addEventListener('message', (event) => {
   const data = event.data
@@ -119,24 +135,30 @@ window.addEventListener('message', (event) => {
 })
 
 // Render
-root.render(
-  <ConfigProvider
-    limits={globalConfig.limits}
-    env={globalConfig.env}
-    plan={globalConfig.plan}
-    dbs={globalConfig.dbs}
-    urls={globalConfig.urls}
-    versions={globalConfig.versions}
-    features={globalConfig.features}
-    locales={globalConfig.locales}
-    lang={globalConfig.lang}
-    fees={globalConfig.fees}
-  >
-    <ThemeProvider
-      theme={globalConfig.env.ui}
-      mode={globalConfig.env.colorMode}
+tolgee?.run().then(() => {
+  root.render(
+    <TolgeeProvider
+      tolgee={tolgee}
+      fallback="Loading..."
     >
-      <App />
-    </ThemeProvider>
-  </ConfigProvider>
-)
+      <ConfigProvider
+        limits={globalConfig.limits}
+        env={globalConfig.env}
+        plan={globalConfig.plan}
+        dbs={globalConfig.dbs}
+        urls={globalConfig.urls}
+        versions={globalConfig.versions}
+        features={globalConfig.features}
+        lang={globalConfig.lang}
+        fees={globalConfig.fees}
+      >
+        <ThemeProvider
+          theme={globalConfig.env.ui}
+          mode={globalConfig.env.colorMode}
+        >
+          <App />
+        </ThemeProvider>
+      </ConfigProvider>
+    </TolgeeProvider>
+  )
+})

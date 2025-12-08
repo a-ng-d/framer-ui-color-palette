@@ -95,7 +95,7 @@ export default class Documents {
     const document = framer.createFrameNode({
       name: setPaletteName(
         this.base.name,
-        theme.name,
+        theme.type === 'default theme' ? undefined : theme.name,
         this.base.preset.name,
         this.base.colorSpace,
         theme.visionSimulationMode

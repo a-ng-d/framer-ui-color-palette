@@ -1,17 +1,17 @@
 import { framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../ui'
 import Documents from '../../canvas/Documents'
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+    throw new Error(tolgee.t('error.unfoundPalette'))
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
@@ -34,7 +34,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     !isAllowedToRemoveTextStyle ||
     !isAllowedToSetAttributes
   )
-    throw new Error(locales.get().error.document)
+    throw new Error(tolgee.t('error.document'))
 
   const documentsInstance = await new Documents({
     base: palette.base,
@@ -44,7 +44,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     view: view,
   }).makeDocuments()
 
-  if (!documentsInstance) throw new Error(locales.get().error.document)
+  if (!documentsInstance) throw new Error(tolgee.t('error.document'))
 
   const children = await documentsInstance.getChildren()
   framer.setSelection(children.map((child) => child.id))

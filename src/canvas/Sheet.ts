@@ -1,5 +1,4 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -7,6 +6,7 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../ui'
 import Title from './Title'
 import Signature from './Signature'
 import Sample from './Sample'
@@ -73,7 +73,7 @@ export default class Sheet {
     // Insert
     const nodeEmptyInstance = await this.nodeEmpty
     const nodeSampleInstance = await new Sample({
-      name: locales.get().warning.emptySourceColors,
+      name: tolgee.t('warning.emptySourceColors'),
       rgb: [255, 255, 255],
       colorSpace: this.base.colorSpace,
       visionSimulationMode: this.theme.visionSimulationMode,
@@ -261,7 +261,7 @@ export default class Sheet {
   makeNode = async () => {
     // Base
     this.node = framer.createFrameNode({
-      name: `_colors${locales.get().separator}do not edit any layer`,
+      name: `_colors${tolgee.t('separator')}do not edit any layer`,
       locked: false,
       layout: 'stack',
       width: 'fit-content',

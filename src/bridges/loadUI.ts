@@ -1,6 +1,6 @@
 import { framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import observeAttribute from '../utils/observeAttribute'
+import { tolgee } from '../ui'
 import globalConfig from '../global.config'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
@@ -34,10 +34,12 @@ const loadUI = async () => {
   }
   const windowSize: Window = {
     width: parseFloat(
-      window.localStorage.getItem('plugin_window_width') ?? '640'
+      window.localStorage.getItem('plugin_window_width') ??
+        globalConfig.limits.width.toString()
     ),
     height: parseFloat(
-      window.localStorage.getItem('plugin_window_height') ?? '400'
+      window.localStorage.getItem('plugin_window_height') ??
+        globalConfig.limits.height.toString()
     ),
   }
 
@@ -46,8 +48,8 @@ const loadUI = async () => {
     height: windowSize.height,
     position: 'top right',
     resizable: true,
-    minWidth: 400,
-    minHeight: 400,
+    minWidth: globalConfig.limits.width,
+    minHeight: globalConfig.limits.height,
   })
 
   // UI > Canvas
@@ -88,13 +90,12 @@ const loadUI = async () => {
           },
         })
 
-        checkUserConsent()
+        checkUserConsent(path.data.userConsent)
           .then(() => checkTrialStatus())
           .then(() => checkCredits())
           .then(() => checkUserPreferences())
           .then(() => checkUserLicense())
       },
-      CHECK_USER_CONSENT: () => checkUserConsent(),
       CHECK_ANNOUNCEMENTS_STATUS: () =>
         checkAnnouncementsStatus(path.data.version),
       //
@@ -123,7 +124,7 @@ const loadUI = async () => {
       },
       UPDATE_LANGUAGE: () => {
         window.localStorage.setItem('user_language', path.data.lang)
-        locales.set(path.data.lang)
+        tolgee.changeLanguage(path.data.lang)
       },
       //
       CREATE_PALETTE: () =>
@@ -166,7 +167,7 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'INFO',
-                message: messages.join(locales.get().separator),
+                message: messages.join(tolgee.t('separator')),
                 timer: 10000,
               },
             })

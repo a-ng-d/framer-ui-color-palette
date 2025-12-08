@@ -1,10 +1,10 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../ui'
 import Sample from './Sample'
 
 export default class Header {
@@ -49,7 +49,7 @@ export default class Header {
     // Instances
     const nodeHeaderInstance = await this.node
     const nodeSampleInstance = await new Sample({
-      name: locales.get().paletteProperties.sourceColors,
+      name: tolgee.t('paletteProperties.sourceColors'),
       rgb: [255, 255, 255],
       colorSpace: this.base.colorSpace,
       visionSimulationMode: this.theme.visionSimulationMode,
