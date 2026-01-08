@@ -102,7 +102,6 @@ const globalConfig: Config = {
       'EXPORT_ANDROID_COMPOSE',
       'EXPORT_ANDROID_XML',
       'EXPORT_CSV',
-      'USER_LANGUAGE_ZH_CN',
     ],
     [
       'LOCAL_PALETTES',
@@ -167,6 +166,7 @@ const globalConfig: Config = {
       'USER_LANGUAGE',
       'USER_LANGUAGE_FR_FR',
       'USER_LANGUAGE_PT_BR',
+      'USER_LANGUAGE_ZH_CN',
     ]
   ),
   lang: 'en-US',
