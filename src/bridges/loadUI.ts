@@ -114,6 +114,10 @@ const loadUI = async () => {
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
+            window.postMessage({
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
@@ -135,7 +139,10 @@ const loadUI = async () => {
         createPaletteFromDocument()
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -150,7 +157,10 @@ const loadUI = async () => {
             window.postMessage({ type: 'STOP_LOADER' })
           })
           .catch((error) => {
-            console.error(error)
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -174,7 +184,10 @@ const loadUI = async () => {
           )
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -187,7 +200,10 @@ const loadUI = async () => {
         createDocument(path.id, path.view)
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -237,7 +253,6 @@ const loadUI = async () => {
       GET_PALETTES: async () => getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () =>
         jumpToPalette(path.id).catch((error) => {
-          console.error(error)
           window.postMessage({
             type: 'POST_MESSAGE',
             data: {
@@ -253,6 +268,10 @@ const loadUI = async () => {
             window.postMessage({ type: 'STOP_LOADER' })
           })
           .catch((error) => {
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {

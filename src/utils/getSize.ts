@@ -16,7 +16,10 @@ export const getJsonSize = (obj: any): number => {
 
     return parseFloat((size / 1024).toFixed(2))
   } catch (error) {
-    console.error(error)
+    window.postMessage({
+      type: 'REPORT_ERROR',
+      data: error,
+    })
     return 100
   }
 }

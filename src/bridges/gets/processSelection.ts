@@ -76,7 +76,10 @@ const processSelection = async () => {
             })
           }
         } catch (error) {
-          console.error('Error processing image:', error)
+          window.postMessage({
+            type: 'REPORT_ERROR',
+            data: error,
+          })
         }
       },
     }
