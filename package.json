@@ -85,7 +85,7 @@
     "color-names": "^2.0.0",
     "fflate": "^0.8.2",
     "file-saver": "^2.0.5",
-    "framer-plugin": "^3.6.0",
+    "framer-plugin": "^3.10.2",
     "mixpanel-browser": "^2.66.0",
     "preact": "^10.6.4",
     "react": "npm:@preact/compat",
