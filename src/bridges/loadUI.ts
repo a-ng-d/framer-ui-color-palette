@@ -295,20 +295,27 @@ const loadUI = async () => {
         window.postMessage({
           type: 'GET_TRIAL',
         }),
-      GET_PRO_PLAN: async () =>
+      GET_PRO: async () =>
         window.postMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE', 'ACTIVATE'],
+            licenseTrigger: 'ACTIVATE',
           },
         }),
-      GO_TO_ONE: async () =>
-        window.open(
-          path.data.context === 'REGULAR'
-            ? globalConfig.urls.storeUrl
-            : globalConfig.urls.storeWithDiscountUrl,
-          '_blank'
-        ),
+      GET_LICENSE: async () =>
+        window.postMessage({
+          type: 'GET_LICENSE',
+        }),
+      GO_TO_PRO_WEEK: async () =>
+        window.open(globalConfig.urls.storeProWeekUrl, '_blank'),
+      GO_TO_PRO_MONTH: async () =>
+        window.open(globalConfig.urls.storeProMonthUrl, '_blank'),
+      GO_TO_PRO_YEAR: async () =>
+        window.open(globalConfig.urls.storeProYearUrl, '_blank'),
+      GO_TO_PRO_LIFETIME: async () =>
+        window.open(globalConfig.urls.storeProLifetimeUrl, '_blank'),
+      GO_TO_ULTIMATE_REQUEST: async () =>
+        window.open(globalConfig.urls.storeUltimateRequestUrl, '_blank'),
       ENABLE_PRO_PLAN: async () =>
         window.postMessage({
           type: 'ENABLE_PRO_PLAN',
