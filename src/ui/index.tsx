@@ -21,6 +21,7 @@ import * as Sentry from '@sentry/react'
 import globalConfig from '../global.config'
 import loadUI from '../bridges/loadUI'
 import { initTolgee } from '../../packages/ui-ui-color-palette/src/external/translation'
+import { initNotion } from '../../packages/ui-ui-color-palette/src/external/cms'
 
 loadUI()
 
@@ -34,6 +35,7 @@ const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
 const mistralApiKey = import.meta.env.VITE_MISTRAL_AI_API_KEY
+const notionApiKey = import.meta.env.VITE_NOTION_API_KEY
 const tolgeeUrl = import.meta.env.VITE_TOLGEE_URL
 const tolgeeApiKey = import.meta.env.VITE_TOLGEE_API_KEY
 
@@ -116,6 +118,10 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
 
 // Mistral AI
 if (globalConfig.env.isMistralAiEnabled) initMistral(mistralApiKey)
+
+// Notion
+if (globalConfig.env.isNotionEnabled && notionApiKey !== undefined)
+  initNotion(notionApiKey)
 
 // Tolgee
 export const tolgee = initTolgee(tolgeeUrl, tolgeeApiKey, globalConfig.lang, {
