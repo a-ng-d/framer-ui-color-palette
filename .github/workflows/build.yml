@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        submodules: 'recursive'
+        submodules: false
         fetch-depth: 0
 
     - uses: actions/setup-node@v4
@@ -18,6 +18,9 @@ jobs:
 
     - name: Initialize and update submodules
       run: |
+        git config submodule.skills.update none
+        git submodule update --init --force
+        git -C packages/ui-ui-color-palette config submodule.skills.update none
         git submodule update --init --recursive --force
 
     - name: Create .env.local file
@@ -33,6 +36,7 @@ jobs:
         echo VITE_CORS_WORKER_URL="${{ vars.VITE_CORS_WORKER_URL }}" >> .env.local
         echo VITE_NOTION_ANNOUNCEMENTS_ID="${{ vars.VITE_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
         echo VITE_NOTION_ONBOARDING_ID="${{ vars.VITE_NOTION_ONBOARDING_ID }}" >> .env.local
+        echo VITE_NOTION_API_KEY="${{ secrets.VITE_NOTION_API_KEY }}" >> .env.local
         echo VITE_LEMONSQUEEZY_URL="${{ vars.VITE_LEMONSQUEEZY_URL }}" >> .env.local
         echo VITE_LEMONSQUEEZY_API_KEY="${{ secrets.VITE_LEMONSQUEEZY_API_KEY }}" >> .env.local
         echo VITE_MISTRAL_AI_API_URL="${{ vars.VITE_MISTRAL_AI_API_URL }}" >> .env.local
