@@ -1,17 +1,49 @@
 import path from 'path'
 import mkcert from 'vite-plugin-mkcert'
 import framer from 'vite-plugin-framer'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, Plugin } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import preact from '@preact/preset-vite'
 
-// https://vitejs.dev/config/
+const excludeUnwantedCssPlugin = (): Plugin => {
+  const excludePattern =
+    /figma-colors|figma-types|penpot-colors|penpot-types|sketch-colors|sketch-types\.css$/
+
+  return {
+    name: 'exclude-unwanted-css',
+    enforce: 'pre',
+
+    resolveId(id, importer) {
+      if (id.endsWith('.css')) {
+        const testPath = importer
+          ? path.resolve(path.dirname(importer), id)
+          : id
+
+        if (excludePattern.test(testPath))
+          return { id: '\0empty-module', external: false }
+      }
+      return null
+    },
+
+    load(id) {
+      if (id === '\0empty-module')
+        return { code: 'export default ""', map: null }
+      return null
+    },
+
+    transformIndexHtml(html) {
+      return html.replace(/<style[^>]*>\s*<\/style>/g, '')
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDev = mode === 'development'
 
   return {
     plugins: [
+      excludeUnwantedCssPlugin(),
       preact(),
       mkcert(),
       framer(),
