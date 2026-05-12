@@ -10,7 +10,7 @@ const filterCssSelectorsPlugin = {
   Rule(rule: { selector: string; remove(): void }) {
     const platformPattern = /\[data-(?:theme|mode)=[^\]]*\]/
     const whitelistPattern =
-      /\[data-theme=framer\]|\[data-mode=framer-(?:light|dark)\]/
+      /\[data-theme=["']?framer["']?\]|\[data-mode=["']?framer-(?:light|dark)["']?\]/
 
     if (
       platformPattern.test(rule.selector) &&
