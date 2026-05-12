@@ -1,40 +1,23 @@
 import path from 'path'
 import mkcert from 'vite-plugin-mkcert'
 import framer from 'vite-plugin-framer'
-import { defineConfig, loadEnv, Plugin } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import preact from '@preact/preset-vite'
 
-const excludeUnwantedCssPlugin = (): Plugin => {
-  const excludePattern =
-    /figma-colors|figma-types|penpot-colors|penpot-types|sketch-colors|sketch-types\.css$/
+const filterCssSelectorsPlugin = {
+  postcssPlugin: 'filter-css-selectors',
+  Rule(rule: { selector: string; remove(): void }) {
+    const platformPattern = /\[data-(?:theme|mode)=[^\]]*\]/
+    const whitelistPattern =
+      /\[data-theme=framer\]|\[data-mode=framer-(?:light|dark)\]/
 
-  return {
-    name: 'exclude-unwanted-css',
-    enforce: 'pre',
-
-    resolveId(id, importer) {
-      if (id.endsWith('.css')) {
-        const testPath = importer
-          ? path.resolve(path.dirname(importer), id)
-          : id
-
-        if (excludePattern.test(testPath))
-          return { id: '\0empty-module', external: false }
-      }
-      return null
-    },
-
-    load(id) {
-      if (id === '\0empty-module')
-        return { code: 'export default ""', map: null }
-      return null
-    },
-
-    transformIndexHtml(html) {
-      return html.replace(/<style[^>]*>\s*<\/style>/g, '')
-    },
-  }
+    if (
+      platformPattern.test(rule.selector) &&
+      !whitelistPattern.test(rule.selector)
+    )
+      rule.remove()
+  },
 }
 
 export default defineConfig(({ mode }) => {
@@ -43,7 +26,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
-      excludeUnwantedCssPlugin(),
       preact(),
       mkcert(),
       framer(),
@@ -86,6 +68,12 @@ export default defineConfig(({ mode }) => {
 
     define: {
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+    },
+
+    css: {
+      postcss: {
+        plugins: [filterCssSelectorsPlugin],
+      },
     },
 
     build: {
