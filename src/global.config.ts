@@ -116,7 +116,6 @@ const globalConfig: Config = {
       'EXPORT_CSV',
       'SETTINGS_CONTRAST_MANAGEMENT',
       'SETTINGS_TEXT_COLORS_THEME',
-      'HELP_ONBOARDING',
       'VIEWS',
       'VIEWS_PALETTE',
       'VIEWS_PALETTE_WITH_PROPERTIES',
