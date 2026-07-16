@@ -1,5 +1,4 @@
-import { createRoot } from 'react-dom/client'
-import React from 'react'
+import { render } from 'preact'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
 import { initPolar } from '@ui-lib/external/transactional'
@@ -33,7 +32,6 @@ const container = document.getElementById('app')
 if (!container)
   throw new Error("Root container element with id 'app' not found.")
 
-const root = createRoot(container)
 
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
@@ -165,7 +163,7 @@ window.addEventListener('message', (event) => {
 
 // Render
 tolgee?.run().then(() => {
-  root.render(
+  render(
     <TolgeeProvider
       tolgee={tolgee}
       fallback="Loading..."
@@ -188,6 +186,7 @@ tolgee?.run().then(() => {
           <App />
         </ThemeProvider>
       </ConfigProvider>
-    </TolgeeProvider>
+    </TolgeeProvider>,
+    container
   )
 })
