@@ -103,8 +103,6 @@ const globalConfig: Config = {
       'HELP_CHAT',
       'LOCAL_PALETTES_PAGE',
       'SCALE_CONTRAST_RATIO',
-      'IMPORTS_REALTIME_COLORS',
-      'IMPORTS_REALTIME_COLORS_ADD',
       'THEMES',
       'THEMES_NAME',
       'THEMES_PARAMS',
