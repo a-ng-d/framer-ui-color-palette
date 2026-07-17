@@ -5,7 +5,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
   PaletteDataThemeItem,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../ui'
 import Title from './Title'
 import Signature from './Signature'

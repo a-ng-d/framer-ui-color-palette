@@ -11,7 +11,7 @@ import chroma from 'chroma-js'
 import {
   HexModel,
   SourceColorConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { imageUrlToArrayBuffer } from '../../utils/imageUrlToArrayBuffer'
 import { tolgee } from '../../ui'
 
