@@ -99,8 +99,6 @@ const globalConfig: Config = {
   },
   features: doSpecificMode(
     [
-      'SYNC_LOCAL_VARIABLES',
-      'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
       'HELP_CHAT',
       'LOCAL_PALETTES_PAGE',
@@ -116,8 +114,6 @@ const globalConfig: Config = {
       'EXPORT_ANDROID_COMPOSE',
       'EXPORT_ANDROID_XML',
       'EXPORT_CSV',
-      'SETTINGS_CONTRAST_MANAGEMENT',
-      'SETTINGS_TEXT_COLORS_THEME',
       'VIEWS',
       'VIEWS_PALETTE',
       'VIEWS_PALETTE_WITH_PROPERTIES',
