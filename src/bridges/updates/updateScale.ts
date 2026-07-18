@@ -1,5 +1,5 @@
-import { doScale } from '@unoff/utils'
 import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import { doScale } from '@unoff/utils'
 import { ScaleMessage } from '../../types/messages'
 
 const updateScale = async (msg: ScaleMessage) => {

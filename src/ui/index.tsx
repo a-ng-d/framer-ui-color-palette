@@ -32,7 +32,6 @@ const container = document.getElementById('app')
 if (!container)
   throw new Error("Root container element with id 'app' not found.")
 
-
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
