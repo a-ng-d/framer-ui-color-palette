@@ -1,5 +1,5 @@
 import { FrameNode, framer } from 'framer-plugin'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import processSelection from '../gets/processSelection'
 import { tolgee } from '../../ui'
 

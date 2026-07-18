@@ -135,12 +135,30 @@ const loadUI = async () => {
       },
       //
       CREATE_PALETTE: () =>
-        createPalette(path).finally(() =>
-          window.postMessage({ type: 'STOP_LOADER' })
-        ),
+        createPalette(path)
+          .finally(() => {
+            getPalettesOnCurrentPage()
+            window.postMessage({ type: 'STOP_LOADER' })
+          })
+          .catch((error) => {
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          }),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
         createPaletteFromDocument()
-          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
+          .finally(() => {
+            getPalettesOnCurrentPage()
+            window.postMessage({ type: 'STOP_LOADER' })
+          })
           .catch((error) => {
             window.postMessage({
               type: 'REPORT_ERROR',
@@ -157,6 +175,7 @@ const loadUI = async () => {
       CREATE_PALETTE_FROM_REMOTE: () =>
         createPaletteFromRemote(path)
           .finally(() => {
+            getPalettesOnCurrentPage()
             window.postMessage({ type: 'STOP_LOADER' })
           })
           .catch((error) => {

@@ -32,7 +32,6 @@ const container = document.getElementById('app')
 if (!container)
   throw new Error("Root container element with id 'app' not found.")
 
-
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
@@ -51,7 +50,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
-    record_sessions_percent: 25,
+    record_sessions_percent: globalConfig.env.isDev ? 0 : 50,
     record_mask_text_selector: '*',
     record_block_selector: 'img',
     record_heatmap_data: true,
@@ -60,12 +59,14 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
 
   const now = new Date()
   const cohort = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  const env = import.meta.env.MODE as 'development' | 'production'
   mixpanel.register({
     Cohort: cohort,
     Version: globalConfig.versions.pluginVersion,
+    Env: env,
   })
 
-  setMixpanelEnv(import.meta.env.MODE as 'development' | 'production')
+  setMixpanelEnv(env)
   initMixpanel(mixpanel)
   setEditor(globalConfig.env.editor)
 }

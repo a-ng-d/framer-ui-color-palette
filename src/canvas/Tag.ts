@@ -1,6 +1,6 @@
 import { FrameNode, framer, ImageAsset, TextNode } from 'framer-plugin'
 import chroma from 'chroma-js'
-import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
+import { RgbModel } from '@yelbolt/engine-ui-color-palette'
 import getAddedNodesDuring from '../utils/getAddedNodesDuring'
 import {
   darkColor,
