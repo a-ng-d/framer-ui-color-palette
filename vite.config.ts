@@ -5,21 +5,6 @@ import { defineConfig, loadEnv } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import preact from '@preact/preset-vite'
 
-const filterCssSelectorsPlugin = {
-  postcssPlugin: 'filter-css-selectors',
-  Rule(rule: { selector: string; remove(): void }) {
-    const platformPattern = /\[data-(?:theme|mode)[*^~]?=[^\]]*\]/
-    const whitelistPattern =
-      /\[data-theme[*^~]?=["']?framer["']?\]|\[data-mode[*^~]?=["']?framer-(?:light|dark)["']?\]|\[data-mode\*=["']?(?:light|dark)["']?\]/
-
-    if (
-      platformPattern.test(rule.selector) &&
-      !whitelistPattern.test(rule.selector)
-    )
-      rule.remove()
-  },
-}
-
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDev = mode === 'development'
@@ -69,7 +54,7 @@ export default defineConfig(({ mode }) => {
 
     css: {
       postcss: {
-        plugins: [filterCssSelectorsPlugin],
+        plugins: [],
       },
     },
 
