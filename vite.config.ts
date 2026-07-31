@@ -8,9 +8,9 @@ import preact from '@preact/preset-vite'
 const filterCssSelectorsPlugin = {
   postcssPlugin: 'filter-css-selectors',
   Rule(rule: { selector: string; remove(): void }) {
-    const platformPattern = /\[data-(?:theme|mode)=[^\]]*\]/
+    const platformPattern = /\[data-(?:theme|mode)[*^~]?=[^\]]*\]/
     const whitelistPattern =
-      /\[data-theme=["']?framer["']?\]|\[data-mode=["']?framer-(?:light|dark)["']?\]/
+      /\[data-theme[*^~]?=["']?framer["']?\]|\[data-mode[*^~]?=["']?framer-(?:light|dark)["']?\]|\[data-mode\*=["']?(?:light|dark)["']?\]/
 
     if (
       platformPattern.test(rule.selector) &&
