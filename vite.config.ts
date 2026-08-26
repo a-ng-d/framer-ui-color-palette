@@ -39,6 +39,17 @@ export default defineConfig(({ mode }) => {
         : []),
     ],
 
+    optimizeDeps: {
+      include: [
+        'preact',
+        'preact/hooks',
+        'preact/compat',
+        'preact/jsx-runtime',
+        '@unoff/ui',
+        '@unoff/utils',
+      ],
+    },
+
     resolve: {
       alias: {
         '@ui-lib': path.resolve(
@@ -46,6 +57,7 @@ export default defineConfig(({ mode }) => {
           './packages/ui-ui-color-palette/src'
         ),
       },
+      preserveSymlinks: true,
     },
 
     define: {

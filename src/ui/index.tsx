@@ -1,5 +1,6 @@
 import { render } from 'preact'
 import mixpanel from 'mixpanel-browser'
+import { commons, framerColors, framerTypes } from '@unoff/ui'
 import App from '@ui-lib/ui/App'
 import { initPolar } from '@ui-lib/external/transactional'
 import {
@@ -161,6 +162,11 @@ window.addEventListener('message', (event) => {
   })
   window.dispatchEvent(pluginEvent)
 })
+
+// Framer Theme
+void commons
+void framerColors
+void framerTypes
 
 // Render
 tolgee?.run().then(() => {

@@ -1,9 +1,10 @@
-import {
-  FullConfiguration,
-  PaletteData,
-} from '@yelbolt/engine-ui-color-palette'
+import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import isValidPaletteConfiguration from '../utils/isValidPaletteConfiguration'
+import setPagePalettesMigration from '../../utils/setPagePalettesMigration'
 
 const getPalettesOnCurrentPage = async () => {
+  setPagePalettesMigration()
+
   const dataKeys = Object.keys(window.localStorage)
   if (dataKeys === undefined)
     return window.postMessage({
@@ -14,13 +15,21 @@ const getPalettesOnCurrentPage = async () => {
   const dataList = dataKeys
     .filter((data: string) => data.includes('palette_'))
     .map((key: string) => {
-      const data = window.localStorage.getItem(key)
-      return data ? JSON.parse(data) : undefined
+      const raw = window.localStorage.getItem(key)
+      if (!raw) return undefined
+
+      try {
+        return JSON.parse(raw)
+      } catch (error) {
+        console.warn(
+          `[getPalettesOnCurrentPage] Failed to parse stored palette data for key "${key}"`,
+          error
+        )
+        return undefined
+      }
     })
-  const palettesList: Array<PaletteData> = dataList.filter(
-    (data: FullConfiguration) => {
-      if (data !== undefined) return data.type === 'UI_COLOR_PALETTE'
-    }
+  const palettesList: Array<FullConfiguration> = dataList.filter(
+    (data): data is FullConfiguration => isValidPaletteConfiguration(data)
   )
 
   return window.postMessage({
