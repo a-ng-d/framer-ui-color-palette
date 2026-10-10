@@ -322,6 +322,7 @@ const loadUI = async () => {
           type: 'GET_PRICING',
           data: {
             licenseTrigger: 'ACTIVATE',
+            origin: path.data?.origin ?? 'UNKNOWN',
           },
         }),
       GET_LICENSE: async () =>

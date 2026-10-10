@@ -18,9 +18,11 @@ const checkUserPreferences = async () => {
     'is_suggested_language_displayed'
   )
   const userLanguage = window.localStorage.getItem('user_language')
+  const isOnboardingRead = window.localStorage.getItem('is_onboarding_read')
+  const palettesView = window.localStorage.getItem('palettes_view')
 
   if (isWCAGDisplayed === null)
-    window.localStorage.setItem('is_wcag_displayed', 'true')
+    window.localStorage.setItem('is_wcag_displayed', 'false')
 
   if (isAPCADisplayed === null)
     window.localStorage.setItem('is_apca_displayed', 'true')
@@ -43,6 +45,12 @@ const checkUserPreferences = async () => {
   if (userLanguage === null)
     window.localStorage.setItem('user_language', globalConfig.lang)
 
+  if (isOnboardingRead === null)
+    window.localStorage.setItem('is_onboarding_read', 'false')
+
+  if (palettesView === null)
+    window.localStorage.setItem('palettes_view', 'LIST')
+
   tolgee.changeLanguage(userLanguage ?? globalConfig.lang)
 
   return window.postMessage(
@@ -50,7 +58,7 @@ const checkUserPreferences = async () => {
       type: 'CHECK_USER_PREFERENCES',
       data: {
         isWCAGDisplayed:
-          isWCAGDisplayed === null ? true : isWCAGDisplayed === 'true',
+          isWCAGDisplayed === null ? false : isWCAGDisplayed === 'true',
         isAPCADisplayed:
           isAPCADisplayed === null ? true : isAPCADisplayed === 'true',
         isWCAGIntervalDisplayed:
@@ -72,6 +80,9 @@ const checkUserPreferences = async () => {
             ? true
             : isSuggestedLanguageDisplayed === 'true',
         userLanguage: userLanguage ?? globalConfig.lang,
+        isOnboardingRead:
+          isOnboardingRead === null ? false : isOnboardingRead === 'true',
+        palettesView: palettesView ?? 'LIST',
       },
     },
     '*'

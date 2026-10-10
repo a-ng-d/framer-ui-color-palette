@@ -34,6 +34,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "pack": "npx framer-plugin-tools@latest pack",
+    "audit:prod": "npm audit --omit=dev",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
     "format": "npx prettier './src' --write"
@@ -41,7 +42,7 @@
   "devDependencies": {
     "@eslint/js": "^9",
     "@preact/preset-vite": "^2.10.1",
-    "@sentry/vite-plugin": "^3.5.0",
+    "@sentry/vite-plugin": "^5.4.1",
     "@types/chroma-js": "^3.1.1",
     "@types/file-saver": "^2.0.5",
     "@types/mixpanel-browser": "^2.66.0",
@@ -49,8 +50,8 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.36.0",
-    "@typescript-eslint/parser": "^8.36.0",
+    "@typescript-eslint/eslint-plugin": "^8.71.1",
+    "@typescript-eslint/parser": "^8.71.1",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitejs/plugin-react-swc": "^3.8.1",
     "cross-env": "^10.0.0",
@@ -63,7 +64,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-css-order": "^2.1.2",
     "typescript": "^5.4.3",
-    "typescript-eslint": "^8.0.1",
+    "typescript-eslint": "^8.71.1",
     "vite": "^6.2.5",
     "vite-plugin-environment": "^1.1.3",
     "vite-plugin-framer": "^1",
@@ -71,28 +72,18 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@mistralai/mistralai": "^1.10.0",
-    "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^8.8.0",
     "@supabase/supabase-js": "^2.44.2",
-    "@tolgee/format-icu": "^6.2.7",
-    "@tolgee/react": "^6.2.7",
-    "@tolgee/web": "^6.2.7",
-    "@unoff/ui": "^1.25.1",
-    "@unoff/utils": "^0.8.2",
-    "@yelbolt/engine-ui-color-palette": "^1.12.1",
-    "chroma-js": "^3.1.2",
-    "color-names": "^2.0.0",
-    "fflate": "^0.8.2",
-    "file-saver": "^2.0.5",
     "framer-plugin": "^3.10.2",
-    "mixpanel-browser": "^2.66.0",
-    "preact": "^10.6.4",
-    "react-syntax-highlighter": "^15.6.1",
-    "uid": "^2.0.2",
+    "ui-ui-color-palette": "*",
     "vite-plugin-mkcert": "^1"
   },
   "overrides": {
     "prismjs": "^1.30.0"
+  },
+  "allowScripts": {
+    "@sentry/cli": true,
+    "@swc/core": true,
+    "esbuild": true
   }
 }
