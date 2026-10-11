@@ -130,14 +130,6 @@ const processSelection = async () => {
           source: 'CANVAS',
           id: uid(),
           isRemovable: true,
-          hue: {
-            shift: 0,
-            isLocked: false,
-          },
-          chroma: {
-            shift: 100,
-            isLocked: false,
-          },
         })
         await selectionHandler('COLOR_SELECTED')
       }
