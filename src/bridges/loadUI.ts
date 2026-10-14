@@ -14,6 +14,7 @@ import processSelection from './gets/processSelection'
 import jumpToPalette from './gets/jumpToPalette'
 import getPalettesOnCurrentPage from './gets/getPalettesOnCurrentPage'
 import deletePalette from './deletions/deletePalette'
+import createSimulation from './creations/createSimulation'
 import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
@@ -218,6 +219,29 @@ const loadUI = async () => {
               },
             })
           }),
+      SIMULATE_PALETTE: async () =>
+        createSimulation(path.id)
+          .then((notice) => {
+            if (notice !== undefined)
+              window.postMessage({
+                type: 'POST_MESSAGE',
+                data: notice,
+              })
+          })
+          .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            window.postMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
+            window.postMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          }),
       CREATE_DOCUMENT: () => {
         createDocument(path.id, path.view)
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
@@ -322,6 +346,7 @@ const loadUI = async () => {
           type: 'GET_PRICING',
           data: {
             licenseTrigger: 'ACTIVATE',
+            origin: path.data?.origin ?? 'UNKNOWN',
           },
         }),
       GET_LICENSE: async () =>

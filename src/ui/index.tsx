@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import mixpanel from 'mixpanel-browser'
-import { commons, framerColors, framerTypes } from '@unoff/ui'
+import { commons, framerModes, framerTypes } from '@unoff/ui'
 import App from '@ui-lib/ui/App'
 import { initPolar } from '@ui-lib/external/transactional'
 import {
@@ -165,7 +165,7 @@ window.addEventListener('message', (event) => {
 
 // Framer Theme
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-;(window as any).__unoffFramerTheme = { commons, framerColors, framerTypes }
+;(window as any).__unoffFramerTheme = { commons, framerModes, framerTypes }
 
 // Render
 tolgee?.run().then(() => {
