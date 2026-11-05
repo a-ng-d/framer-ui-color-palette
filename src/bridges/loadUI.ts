@@ -2,6 +2,7 @@ import { framer } from 'framer-plugin'
 import observeAttribute from '../utils/observeAttribute'
 import { tolgee } from '../ui'
 import globalConfig from '../global.config'
+import { reportUsage } from './utils/usage'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
@@ -14,7 +15,9 @@ import processSelection from './gets/processSelection'
 import jumpToPalette from './gets/jumpToPalette'
 import getPalettesOnCurrentPage from './gets/getPalettesOnCurrentPage'
 import deletePalette from './deletions/deletePalette'
-import createSimulation from './creations/createSimulation'
+import createSimulation, {
+  measureSelection,
+} from './creations/createSimulation'
 import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
@@ -96,6 +99,7 @@ const loadUI = async () => {
           .then(() => checkCredits())
           .then(() => checkUserPreferences())
           .then(() => checkUserLicense())
+          .then(() => measureSelection())
       },
       OPEN_DOCUMENT: async () => {
         processSelection()
@@ -115,6 +119,10 @@ const loadUI = async () => {
         }),
       UPDATE_DOCUMENT: () => {
         updateDocument(path.view)
+          .then(({ pairs }) => {
+            if (pairs !== null)
+              reportUsage('UPDATE_DOCUMENT', { color: pairs.size })
+          })
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             window.postMessage({
@@ -194,17 +202,25 @@ const loadUI = async () => {
           }),
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)
-          .then(async (message) => [message, await updateLocalStyles(path.id)])
-          .then((messages) =>
+          .then(async (created) => ({
+            created,
+            updated: await updateLocalStyles(path.id),
+          }))
+          .then(({ created, updated }) => {
             window.postMessage({
               type: 'POST_MESSAGE',
               data: {
                 type: 'INFO',
-                message: messages.join(tolgee.t('separator')),
+                message: [created.message, updated.message].join(
+                  tolgee.t('separator')
+                ),
                 timer: 10000,
               },
             })
-          )
+            reportUsage('SYNC_LOCAL_STYLES', {
+              style: created.count + updated.count,
+            })
+          })
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             window.postMessage({
@@ -221,12 +237,14 @@ const loadUI = async () => {
           }),
       SIMULATE_PALETTE: async () =>
         createSimulation(path.id)
-          .then((notice) => {
+          .then(({ notice, layers }) => {
             if (notice !== undefined)
               window.postMessage({
                 type: 'POST_MESSAGE',
                 data: notice,
               })
+            if (layers !== undefined)
+              reportUsage('SIMULATE_PALETTE', { layer: layers })
           })
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
@@ -244,6 +262,9 @@ const loadUI = async () => {
           }),
       CREATE_DOCUMENT: () => {
         createDocument(path.id, path.view)
+          .then(({ pairs }) =>
+            reportUsage('CREATE_DOCUMENT', { color: pairs.size })
+          )
           .finally(() => window.postMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             window.postMessage({

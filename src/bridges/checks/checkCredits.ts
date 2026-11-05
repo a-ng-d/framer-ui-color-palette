@@ -4,6 +4,21 @@ const addHours = (date: Date, hours: number) => {
   return new Date(date.getTime() + hours * 60 * 60 * 1000)
 }
 
+// Calendar month addition, clamping day overflow (Jan 31 -> Feb 28/29)
+const addMonths = (date: Date, months: number) => {
+  const result = new Date(date.getTime())
+  const day = result.getDate()
+  result.setDate(1)
+  result.setMonth(result.getMonth() + months)
+  const lastDay = new Date(
+    result.getFullYear(),
+    result.getMonth() + 1,
+    0
+  ).getDate()
+  result.setDate(Math.min(day, lastDay))
+  return result
+}
+
 const checkCredits = async () => {
   const creditsCountStr = window.localStorage.getItem('credits_count')
   const renewDateStr = window.localStorage.getItem('credits_renew_date')
@@ -18,12 +33,17 @@ const checkCredits = async () => {
       ? new Date(parseInt(renewDateStr, 10))
       : null
 
+  const periodMonths = globalConfig.plan.creditsRenewalPeriodMonths
   const periodHours =
     globalConfig.plan.creditsRenewalPeriodHours ??
     globalConfig.plan.creditsRenewalPeriodDays * 24
+  const addPeriod = (date: Date) =>
+    periodMonths !== undefined
+      ? addMonths(date, periodMonths)
+      : addHours(date, periodHours)
 
   if (renewDate === null) {
-    const next = addHours(now, periodHours)
+    const next = addPeriod(now)
     window.localStorage.setItem('credits_renew_date', next.getTime().toString())
     renewDate = next
   }
@@ -33,7 +53,7 @@ const checkCredits = async () => {
       'credits_count',
       globalConfig.plan.creditsLimit.toString()
     )
-    const next = addHours(now, periodHours)
+    const next = addPeriod(now)
     window.localStorage.setItem('credits_renew_date', next.getTime().toString())
     creditsCount = globalConfig.plan.creditsLimit
   }
@@ -55,7 +75,7 @@ const checkCredits = async () => {
       'credits_count',
       globalConfig.plan.creditsLimit.toString()
     )
-    const next = addHours(now, periodHours)
+    const next = addPeriod(now)
     window.localStorage.setItem('credits_renew_date', next.getTime().toString())
     creditsCount = globalConfig.plan.creditsLimit
     renewDate = next

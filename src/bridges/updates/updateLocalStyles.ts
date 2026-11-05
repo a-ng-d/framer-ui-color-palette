@@ -2,7 +2,9 @@ import { framer } from 'framer-plugin'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../../ui'
 
-const updateLocalStyles = async (id: string) => {
+const updateLocalStyles = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -20,6 +22,8 @@ const updateLocalStyles = async (id: string) => {
   const hasThemes = palette.libraryData.some(
     (item) => !item.id.includes('00000000000')
   )
+
+  let count = 0
 
   const updatedLocalStylesStatusMessage = await framer
     .getColorStyles()
@@ -163,13 +167,15 @@ const updateLocalStyles = async (id: string) => {
         })
       )
 
+      count = i + k
+
       messages.push(tolgee.t('info.updatedLocalStyles', { count: i }))
       messages.push(tolgee.t('info.removedLocalStyles', { count: k }))
 
       return messages.join(tolgee.t('separator'))
     })
 
-  return updatedLocalStylesStatusMessage
+  return { message: updatedLocalStylesStatusMessage, count }
 }
 
 export default updateLocalStyles
