@@ -3,7 +3,9 @@ import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../../ui'
 import LocalStyle from '../../canvas/LocalStyle'
 
-const createLocalStyles = async (id: string) => {
+const createLocalStyles = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -19,6 +21,8 @@ const createLocalStyles = async (id: string) => {
   const hasThemes = palette.libraryData.some(
     (item) => !item.id.includes('00000000000')
   )
+
+  let count = 0
 
   const createdLocalStylesStatusMessage = await framer
     .getColorStyles()
@@ -127,12 +131,14 @@ const createLocalStyles = async (id: string) => {
 
       window.localStorage.setItem(`palette_${id}`, JSON.stringify(palette))
 
+      count = i
+
       return tolgee.t('info.createdLocalStyles', {
         count: i.toString(),
       })
     })
 
-  return createdLocalStylesStatusMessage
+  return { message: createdLocalStylesStatusMessage, count }
 }
 
 export default createLocalStyles

@@ -4,10 +4,14 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { getLaidOutPairs, getWorkingThemes, UsagePairs } from '../utils/usage'
 import { tolgee } from '../../ui'
 import Documents from '../../canvas/Documents'
 
-const createDocument = async (id: string, view: ViewConfiguration) => {
+const createDocument = async (
+  id: string,
+  view: ViewConfiguration
+): Promise<{ palette: FullConfiguration; pairs: UsagePairs }> => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -36,10 +40,12 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   )
     throw new Error(tolgee.t('error.document'))
 
+  const data = new Data(palette).makePaletteData()
+
   const documentsInstance = await new Documents({
     base: palette.base,
     themes: palette.themes,
-    data: new Data(palette).makePaletteData(),
+    data,
     meta: palette.meta,
     view: view,
   }).makeDocuments()
@@ -51,7 +57,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
 
   setTimeout(() => framer.zoomIntoView(children.map((child) => child.id)), 1000)
 
-  return palette
+  return { palette, pairs: getLaidOutPairs(getWorkingThemes(data)) }
 }
 
 export default createDocument

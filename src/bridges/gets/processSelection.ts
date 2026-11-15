@@ -12,6 +12,7 @@ import {
   HexModel,
   SourceColorConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { measureSelection } from '../creations/createSimulation'
 import { imageUrlToArrayBuffer } from '../../utils/imageUrlToArrayBuffer'
 import { tolgee } from '../../ui'
 
@@ -25,6 +26,10 @@ const processSelection = async () => {
 
   const selection: Array<CanvasNode> = await framer.getSelection()
   currentSelection = await framer.getSelection()
+
+  measureSelection(selection).catch((error) =>
+    window.postMessage({ type: 'REPORT_ERROR', data: error })
+  )
 
   const viableSelection: Array<SourceColorConfiguration> = []
 

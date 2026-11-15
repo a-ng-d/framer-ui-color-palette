@@ -282,31 +282,36 @@ const deriveTextStyle = async (
   return created
 }
 
-const remapNode = async (node: CanvasNode, context: SimulationContext) => {
+const remapNode = async (
+  node: CanvasNode,
+  context: SimulationContext
+): Promise<boolean> => {
   const { match } = context
 
   if (isSVGNode(node)) {
     const svg = remapSvg(node.svg, match)
-    if (svg !== node.svg) await node.setAttributes({ svg })
-    return
+    if (svg === node.svg) return false
+    await node.setAttributes({ svg })
+    return true
   }
 
   if (isTextNode(node)) {
     const style = node.inlineTextStyle
-    if (style === null || !context.canCreateTextStyle) return
+    if (style === null || !context.canCreateTextStyle) return false
 
     const current = resolveColor(style.color)
-    if (current === null) return
+    if (current === null) return false
 
     const color = match(current)
-    if (color === current) return
+    if (color === current) return false
 
     const derived = await deriveTextStyle(style, color, context)
-    if (derived !== null) await node.setAttributes({ inlineTextStyle: derived })
-    return
+    if (derived === null) return false
+    await node.setAttributes({ inlineTextStyle: derived })
+    return true
   }
 
-  if (!isFrameNode(node)) return
+  if (!isFrameNode(node)) return false
 
   const attributes: {
     backgroundColor?: string
@@ -333,21 +338,77 @@ const remapNode = async (node: CanvasNode, context: SimulationContext) => {
     if (color !== borderColor) attributes.border = { ...node.border, color }
   }
 
-  if (Object.keys(attributes).length > 0) await node.setAttributes(attributes)
+  if (Object.keys(attributes).length === 0) return false
+
+  await node.setAttributes(attributes)
+  return true
 }
 
-const simulateNode = async (node: CanvasNode, context: SimulationContext) => {
-  if ('visible' in node) {
-    if (!node.visible || node.locked) return
+const simulateNode = async (
+  node: CanvasNode,
+  context: SimulationContext
+): Promise<number> => {
+  let changed = 0
 
-    await remapNode(node, context)
+  if ('visible' in node) {
+    if (!node.visible || node.locked) return 0
+
+    if (await remapNode(node, context)) changed++
   }
 
   const children = await node.getChildren()
-  for (const child of children) await simulateNode(child, context)
+  for (const child of children) changed += await simulateNode(child, context)
+
+  return changed
 }
 
-const createSimulation = async (id: string) => {
+const countNode = async (node: CanvasNode): Promise<number> => {
+  let count = 0
+
+  if ('visible' in node) {
+    if (!node.visible || node.locked) return 0
+
+    if (isSVGNode(node) || isTextNode(node) || isFrameNode(node)) count++
+  }
+
+  const children = await node.getChildren()
+  for (const child of children) count += await countNode(child)
+
+  return count
+}
+
+export const countSimulationLayers = async (
+  selection: ReadonlyArray<CanvasNode>
+) => {
+  let total = 0
+  for (const node of selection) total += await countNode(node)
+  return total
+}
+
+let measureSequence = 0
+
+export const measureSelection = async (
+  selection?: ReadonlyArray<CanvasNode>
+) => {
+  const sequence = ++measureSequence
+  const layers = await countSimulationLayers(
+    selection ?? (await framer.getSelection())
+  )
+  if (sequence !== measureSequence) return
+  window.postMessage({
+    type: 'SELECTION_MEASURED',
+    data: { layers },
+  })
+}
+
+type SimulationNotice = {
+  type: 'WARNING'
+  message: string
+}
+
+const createSimulation = async (
+  id: string
+): Promise<{ notice?: SimulationNotice; layers?: number }> => {
   const rawPalette = window.localStorage.getItem(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -356,8 +417,10 @@ const createSimulation = async (id: string) => {
   const selection = await framer.getSelection()
   if (selection.length === 0)
     return {
-      type: 'WARNING' as const,
-      message: tolgee.t('warning.emptySelection'),
+      notice: {
+        type: 'WARNING' as const,
+        message: tolgee.t('warning.emptySelection'),
+      },
     }
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
@@ -375,7 +438,10 @@ const createSimulation = async (id: string) => {
     textStyles: null,
   }
 
-  for (const node of selection) await simulateNode(node, context)
+  let layers = 0
+  for (const node of selection) layers += await simulateNode(node, context)
+
+  return { layers }
 }
 
 export default createSimulation

@@ -6,13 +6,19 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { getLaidOutPairs, UsagePairs } from '../utils/usage'
 import setPaletteName from '../../utils/setPaletteName'
 import { getJsonSize } from '../../utils/getSize'
 import { tolgee } from '../../ui'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
-const updateDocument = async (view: ViewConfiguration) => {
+const updateDocument = async (
+  view: ViewConfiguration
+): Promise<{
+  palette: FullConfiguration | null
+  pairs: UsagePairs | null
+}> => {
   const document = (await framer.getSelection())[0] as FrameNode
   const id = await document.getPluginData('id')
   const themeId = await document.getPluginData('themeId')
@@ -80,7 +86,7 @@ const updateDocument = async (view: ViewConfiguration) => {
           view: view,
         }).makeNode()
 
-  if (!newDocument) return null
+  if (!newDocument) return { palette: null, pairs: null }
 
   document.setAttributes({
     name: setPaletteName(
@@ -112,7 +118,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     },
   })
 
-  return palette
+  return { palette, pairs: getLaidOutPairs([themeData]) }
 }
 
 export default updateDocument
